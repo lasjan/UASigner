@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<Configuration>
+  <Profiles>
+    <Profile Id="1">
+      <InputLocationAccess Type="Directory">
+        <Parameters>
+          <P k="dirPath">e:\UA\Processor\IN\PARTNER_1</P>
+          <P k="fileMask">xml</P>
+        </Parameters>
+      </InputLocationAccess>
+      <OutputLocationsAccess>
+        <OutputLocationAccess Type="Directory">
+          <Parameters>
+            <P k="dirPath">E:\out11</P>
+            <P k="fileMask">xml</P>
+          </Parameters>
+        </OutputLocationAccess>
+        <OutputLocationAccess Type="Directory">
+          <Parameters>
+            <P k="dirPath">E:\out12</P>
+            <P k="fileMask">xml</P>
+          </Parameters>
+        </OutputLocationAccess>
+      </OutputLocationsAccess>
+      <SignContext>
+        <PKInfosId>
+          <PkInfoId>2</PkInfoId>
+        </PKInfosId>
+        <CertPath>e:\UA\EUSignCP(JS)-20160202\EUTestTax3PKeysAndCerts\Certificates</CertPath>
+      </SignContext>
+    </Profile>
+    <Profile Id="2">
+      <InputLocationAccess Type="Directory">
+        <Parameters>
+          <P k="dirPath">e:\UA\Processor\IN\PARTNER_2</P>
+          <P k="fileMask">xml</P>
+        </Parameters>
+      </InputLocationAccess>
+      <OutputLocationsAccess>
+        <OutputLocationAccess Type="Directory">
+          <Parameters>
+            <P k="dirPath">E:\out21</P>
+            <P k="fileMask">xml</P>
+          </Parameters>
+        </OutputLocationAccess>
+      </OutputLocationsAccess>
+      <SignContext>
+        <PKInfosId />
+        <CertPath>e:\UA\EUSignCP(JS)-20160202\EUTestTax3PKeysAndCerts\Certificates</CertPath>
+      </SignContext>
+    </Profile>
+    <Profile Id="3">
+      <InputLocationAccess Type="Directory">
+        <Parameters>
+          <P k="dirPath">e:\UA\Processor\IN\PARTNER_3</P>
+          <P k="fileMask">xml</P>
+        </Parameters>
+      </InputLocationAccess>
+      <OutputLocationsAccess>
+        <OutputLocationAccess Type="Directory">
+          <Parameters>
+            <P k="dirPath">E:\UA3\out</P>
+            <P k="fileMask">xml</P>
+          </Parameters>
+        </OutputLocationAccess>
+      </OutputLocationsAccess>
+      <SignContext>
+        <PKInfosId>
+          <PkInfoId>3</PkInfoId>
+        </PKInfosId>
+        <TSInfoId>0</TSInfoId>
+        <CertPath>e:\UA\EUSignCP(JS)-20160202\EUTestTax3PKeysAndCerts\Certificates</CertPath>
+      </SignContext>
+    </Profile>
+    <Profile Id="4">
+      <InputLocationAccess Type="Directory">
+        <Parameters>
+          <P k="dirPath">E:\UA\Processor\IN\PARTNER_4</P>
+          <P k="fileMask">xml</P>
+        </Parameters>
+      </InputLocationAccess>
+      <OutputLocationsAccess>
+        <OutputLocationAccess Type="Directory">
+          <Parameters>
+            <P k="dirPath">E:\UA\Processor\OUT\PARTNER_4</P>
+            <P k="fileMask">xml</P>
+          </Parameters>
+        </OutputLocationAccess>
+      </OutputLocationsAccess>
+      <SignContext>
+        <PKInfosId>
+          <PkInfoId>2</PkInfoId>
+        </PKInfosId>
+      </SignContext>
+    </Profile>
+  </Profiles>
+  <PKInfos>
+    <PKInfo Id="2" Type="File">
+      <Parameters>
+        <P k="filePath">E:\UA\EUSignCP(JS)-20160202\EUTestTax3PKeysAndCerts\PKeys\Stamp\Key-6.dat</P>
+        <P k="alias">Stamp_changed_changed</P>
+        <P k="password">MTIzNDU2Nzc=</P>
+      </Parameters>
+    </PKInfo>
+    <PKInfo Id="3" Type="File">
+      <Parameters>
+        <P k="filePath">E:\UA\EUSignCP(JS)-20160202\EUTestTax3PKeysAndCerts\PKeys\Director\Key-6.dat</P>
+        <P k="alias">Director</P>
+        <P k="password">MTI0NTY3Nw==</P>
+      </Parameters>
+    </PKInfo>
+    <PKInfo Id="4" Type="File">
+      <Parameters>
+        <P k="filePath">E:\UA\EUSignCP(JS)-20160202\EUTestTax3PKeysAndCerts\PKeys\Director\Key-6.dat</P>
+        <P k="alias">TEst</P>
+        <P k="password">MTIzY2Rz</P>
+      </Parameters>
+    </PKInfo>
+  </PKInfos>
+  <TSInfos>
+    <TSInfo Id="0">
+      <Url>time.certum.pl</Url>
+      <Port>80</Port>
+    </TSInfo>
+  </TSInfos>
+  <GlobalCertPath>e:\UA\EUSignCP(JS)-20160202\EUTestTax3PKeysAndCerts\Certificates</GlobalCertPath>
+</Configuration>
