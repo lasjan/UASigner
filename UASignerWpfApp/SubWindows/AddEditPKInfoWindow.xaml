@@ -1,0 +1,40 @@
+﻿<Window x:Class="UASigner.WpfApp.SubWindows.AddEditPKInfoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:UASigner.WpfApp.Properties"
+        Title="AddEditPKInfoWindow" Height="200" Width="380">
+    <Grid Margin="30 0 30 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <WrapPanel VerticalAlignment="Center">
+            <Label Content="Alias" Name="label_Alias"></Label>
+        </WrapPanel>
+        <WrapPanel VerticalAlignment="Center"  Grid.Row="1">
+            <Label Content="{DynamicResource  langRes.lbl_location}" Name="label_Location"></Label>
+        </WrapPanel>
+        <WrapPanel VerticalAlignment="Center"  Grid.Row="2">
+            <Label Content="{DynamicResource  langRes.lbl_password}" Name="label_Password"></Label>
+        </WrapPanel>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+            <TextBox   Name="textbox_Alias" HorizontalAlignment="Stretch" ></TextBox >
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" >
+            <TextBox   Name="textbox_Location" HorizontalAlignment="Stretch"></TextBox >
+            <Button Name="btn_OpenFile" Click="btn_OpenFile_Click" Width="70" HorizontalAlignment="Right" >Open file</Button>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="2" VerticalAlignment="Center">
+            <PasswordBox   Name="textbox_Password"  HorizontalAlignment="Stretch" MinWidth="200"></PasswordBox >
+        </StackPanel>
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center">
+            <Button HorizontalAlignment="Right" Name="btn_AddEdit" Click="btn_AddEdit_Click">Add</Button>
+        </StackPanel>
+    </Grid>
+</Window>

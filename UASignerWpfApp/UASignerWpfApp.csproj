@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{48E10470-CF41-4B1E-BFFE-45AF3801E24C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UASigner.WpfApp</RootNamespace>
+    <AssemblyName>WpfApplicationTutorial</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="AppWindow.cs" />
+    <Compile Include="Profiles\Configuration\CFConfig.cs" />
+    <Compile Include="Profiles\Configuration\CFLocationAccess.cs" />
+    <Compile Include="Profiles\Configuration\CFPKInfo.cs" />
+    <Compile Include="Profiles\Configuration\CFProfile.cs" />
+    <Compile Include="Profiles\Configuration\CFSignContext.cs" />
+    <Compile Include="Profiles\Configuration\Configuration.cs" />
+    <Compile Include="Profiles\Configuration\ConfigurationFile.cs" />
+    <Compile Include="Profiles\Configuration\ConfigurationManager.cs" />
+    <Compile Include="Profiles\Configuration\CFTSInfo.cs" />
+    <Compile Include="Profiles\Configuration\SerializableDictionary.cs" />
+    <Compile Include="Display\CultureFlag.cs" />
+    <Compile Include="Display\DisplayablePkInfo.cs" />
+    <Compile Include="Profiles\Exceptions\ConfigurationException.cs" />
+    <Compile Include="Profiles\GenericProfile.cs" />
+    <Compile Include="Profiles\Providers\ActionType.cs" />
+    <Compile Include="Profiles\Providers\IGenericProviderAction.cs" />
+    <Compile Include="Profiles\Providers\IItem.cs" />
+    <Compile Include="Profiles\Providers\IObservable.cs" />
+    <Compile Include="Profiles\Providers\IObserver.cs" />
+    <Compile Include="Profiles\Providers\xxxITsInfoProvider.cs" />
+    <Compile Include="Profiles\Providers\PkInfoProvider.cs" />
+    <Compile Include="Profiles\Providers\xxxIPKInfoProvider.cs" />
+    <Compile Include="Profiles\Providers\ProfileProvider.cs" />
+    <Compile Include="Profiles\Providers\TsInfoProvider.cs" />
+    <Compile Include="Properties\Resources.pl-PL.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.pl-PL.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceManager.cs" />
+    <Compile Include="Settings\AddEditPKInfoeEventArgs.cs" />
+    <Compile Include="Profiles\SignatureLevel.cs" />
+    <Compile Include="SubTabs\ProcessTab.xaml.cs">
+      <DependentUpon>ProcessTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SubWindows\AddEditPKInfoWindow.xaml.cs">
+      <DependentUpon>AddEditPKInfoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SubWindows\AddEditProfileWindow.xaml.cs">
+      <DependentUpon>AddEditProfileWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Display\DisplayableFactory.cs" />
+    <Compile Include="Display\DisplayableProfile.cs" />
+    <Compile Include="Profiles\File\FileDocument.cs" />
+    <Compile Include="DirectoryProfile.cs" />
+    <Compile Include="Profiles\IDocument.cs" />
+    <Compile Include="Display\IDisplayable.cs" />
+    <Compile Include="Profiles\IProfile.cs" />
+    <Compile Include="Profiles\LocationAccess.cs" />
+    <Compile Include="Profiles\PKFileInfo.cs" />
+    <Compile Include="Profiles\PKInfo.cs" />
+    <Compile Include="Profiles\Providers\DirectoryProfileProvider.cs" />
+    <Compile Include="Profiles\Providers\xxxIProfileProvider.cs" />
+    <Compile Include="Settings\AddEditProfileEventArgs.cs" />
+    <Compile Include="Profiles\SignContextProfile.cs" />
+    <Compile Include="Profiles\TimeStampServerInfo.cs" />
+    <Compile Include="Utils\Serialization.cs" />
+    <Page Include="SubTabs\ProcessTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SubWindows\AddEditPKInfoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SubWindows\AddEditProfileWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Profiles\File\DirectoryAccess.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.pl-PL.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.pl-PL.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\folder_ico.png" />
+    <Resource Include="Resources\Images\key_ico.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ua_flag_ico.png" />
+    <Resource Include="Resources\Images\uk_flag_ico.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\pl_flag_ico.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
