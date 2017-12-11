@@ -12,5 +12,7 @@ namespace UASigner.Profiles
         LocationAccess InLocationAccess { get; set; }
         IEnumerable<LocationAccess> OutLocationAccess { get; set; }
         SignContextProfile SignProfile { get; set; }
+
+        void Validate();
     }
 }

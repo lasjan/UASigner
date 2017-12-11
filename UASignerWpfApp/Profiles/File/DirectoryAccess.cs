@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using UASigner.Profiles.Exceptions;
 namespace UASigner.Profiles
 {
     public class DirectoryAccess:LocationAccess
     {
-
+        LocationAccess backup;
         DirectoryInfo directoryInfo;
         string fileMask ="xml";
 
@@ -24,6 +25,12 @@ namespace UASigner.Profiles
         {
             this.directoryInfo = new DirectoryInfo(directoryPath);
             this.fileMask = fileMask;
+        }
+        public DirectoryAccess(string directoryPath, string fileMask,string backupPath)
+        {
+            this.directoryInfo = new DirectoryInfo(directoryPath);
+            this.fileMask = fileMask;
+            this.backup = new DirectoryAccess(backupPath, fileMask);
         }
         public override IEnumerable<IDocument> GetDocuments()
         {
@@ -47,9 +54,37 @@ namespace UASigner.Profiles
                 }
             }
         }
+        public override void Validate()
+        {
+            if (!System.IO.Directory.Exists(this.directoryInfo.FullName))
+            {
+                throw new ConfigurationException(1, String.Format("Directory {0} does not exists!", this.directoryInfo.FullName), null);
+            }
+        }
         public override string ToString()
         {
             return String.Format("[{0}{1}]", this.DirectoryPath, this.fileMask);
+        }
+
+        public override void RemoveDocument(IDocument document, bool withBackup)
+        {
+            if (withBackup)
+            { 
+                if(this.backup == null)
+                {
+                    throw new Exceptions.ConfigurationException(1, "Backup folder has to be spefied when 'withBackup=true' invke", null);
+                }
+
+                List<IDocument> toMoveList = new List<IDocument> { document };
+                this.backup.PutDocuments(toMoveList);
+            }
+
+
+            var toRemove = this.directoryInfo.GetFiles().FirstOrDefault(x => x.Name.Equals(document.DocumentName, StringComparison.InvariantCultureIgnoreCase));
+            if (toRemove != null)
+            {
+                File.Delete(toRemove.FullName);
+            }
         }
     }
 }

@@ -39,7 +39,7 @@ namespace UASigner.WpfApp
         void Init()
         {
             this.config = ConfigurationManager.GetConfiguration();
-
+            this.config.Validate();
             profileProvider = new ProfileProvider(config);
             pkInfoProvider = new PkInfoProvider(config);
             pkInfoProvider.AddObserver(profileProvider);
@@ -84,7 +84,7 @@ namespace UASigner.WpfApp
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            AddEditProfileWindow addProfile = new AddEditProfileWindow(profileProvider.Get().First());
+            AddEditProfileWindow addProfile = new AddEditProfileWindow(null);
             addProfile.MyEvent += addProfile_MyEvent;
             addProfile.Show();
 

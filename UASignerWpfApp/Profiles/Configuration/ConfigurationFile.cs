@@ -186,5 +186,11 @@ namespace UASigner.Profiles.Configuration
             parsedConfig = Serialization.DeserializeToObject<CFConfig>(xmlFileContent);
             BuildConfiguration();
         }
+
+        public override void Validate()
+        {
+            this.profiles.ForEach(x => x.Validate());
+            this.pkInfos.ForEach(x => x.Validate());
+        }
     }
 }

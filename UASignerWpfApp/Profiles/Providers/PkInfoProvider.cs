@@ -43,7 +43,7 @@ namespace UASigner.Profiles.Providers
                 {
                     if (this.pkInfos.Any(x => x.Alias.Equals(item.Alias, StringComparison.InvariantCultureIgnoreCase)))
                     {
-                        throw new Exceptions.ConfigurationException(0, "This alias already exists", item.Alias);
+                        throw new Exceptions.ConfigurationException(101, "This alias already exists", item.Alias);
                     }
                 }
                 if (item.Id == null)

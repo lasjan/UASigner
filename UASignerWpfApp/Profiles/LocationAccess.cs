@@ -10,9 +10,14 @@ namespace UASigner.Profiles
     {
         public abstract IEnumerable<IDocument> GetDocuments();
         public abstract void PutDocuments(IEnumerable<IDocument> documents);
+        public abstract void RemoveDocument(IDocument document, bool withBackup);
         public override string ToString()
         {
             return base.ToString();
+        }
+        public virtual void Validate()
+        {
+            return ;
         }
     }
 }

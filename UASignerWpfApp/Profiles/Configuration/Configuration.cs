@@ -66,5 +66,10 @@ namespace UASigner.Profiles.Configuration
             }
         }
         protected abstract void SyncSource();
+
+        public virtual void Validate()
+        {
+            return;
+        }
     }
 }

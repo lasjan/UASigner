@@ -12,6 +12,14 @@ namespace UASigner.WpfApp
     {
         static List<CultureFlag> cultureFlags;
         public static string ResourceNs { get; set; }
+
+        public static List<DisplayableAccessType> GetLocationTypes()
+        {
+            List<DisplayableAccessType> list = new List<DisplayableAccessType>();
+            list.Add(new DisplayableAccessType{AccessType = Profiles.AccessType.Directory, DispName = GetStringResource("cblistitem_directory","directory")});
+            list.Add(new DisplayableAccessType { AccessType = Profiles.AccessType.Ftp, DispName = GetStringResource("cblistitem_ftp", "Ftp") });
+            return list;
+        }
         public static List<CultureFlag> GetCultureFlags()
         {
             if (cultureFlags == null)
@@ -38,6 +46,11 @@ namespace UASigner.WpfApp
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(culture);
         }
 
+        static string GetStringResource(string name,string defaultName)
+        { 
+            var rm  = new System.Resources.ResourceManager(ResourceNs, System.Reflection.Assembly.GetExecutingAssembly());
+            return rm.GetString(name) ?? defaultName;
+        }
         public static string BuildExceptionMessage(Exception ex)
         {
             string msg = ex.Message;

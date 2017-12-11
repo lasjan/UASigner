@@ -55,6 +55,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppWindow.cs" />
+    <Compile Include="Display\CheckBoxWrapper.cs" />
+    <Compile Include="Display\DisplayableAccessType.cs" />
+    <Compile Include="Display\DisplayableTSInfo.cs" />
+    <Compile Include="Profiles\AccessType.cs" />
     <Compile Include="Profiles\Configuration\CFConfig.cs" />
     <Compile Include="Profiles\Configuration\CFLocationAccess.cs" />
     <Compile Include="Profiles\Configuration\CFPKInfo.cs" />
@@ -179,6 +183,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\pl_flag_ico.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ts_info_ico.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

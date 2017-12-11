@@ -38,5 +38,11 @@ namespace UASigner.Profiles
             get;
             set;
         }
+
+
+        public void Validate()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

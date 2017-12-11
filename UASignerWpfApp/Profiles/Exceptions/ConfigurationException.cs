@@ -32,9 +32,19 @@ namespace UASigner.Profiles.Exceptions
             this.code = code;
             this.parameters = parameters;
         }
+        public ConfigurationException(Exception innerEx,int code, string exception, params string[] parameters)
+            : base(exception,innerEx)
+        {
+            this.code = code;
+            this.parameters = parameters;
+        }
     }
     /*
      Codes Lookup 
-     0 - pk info z aliasem juz istnieje
+     * 1 - fodler nie istnieje
+
+     * 101 - pk info z aliasem juz istnieje
+     * 102 - haslo sie nie zgadza
+     
      */
 }

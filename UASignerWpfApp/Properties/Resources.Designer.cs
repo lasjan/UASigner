@@ -61,6 +61,15 @@ namespace UASigner.WpfApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Directory.
+        /// </summary>
+        public static string cblistitem_directory {
+            get {
+                return ResourceManager.GetString("cblistitem_directory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This alias (&apos;{0}&apos;) is already taken!.
         /// </summary>
         public static string err_conf_0 {

@@ -30,5 +30,22 @@ namespace UASigner.Profiles
             get;
             set;
         }
+
+
+        public void Validate()
+        {
+            if (this.InLocationAccess != null)
+            {
+                this.InLocationAccess.Validate();
+            }
+            if(this.OutLocationAccess!=null)
+            {
+                foreach (var outLoc in this.OutLocationAccess)
+                {
+                    outLoc.Validate();
+                }
+            }
+
+        }
     }
 }

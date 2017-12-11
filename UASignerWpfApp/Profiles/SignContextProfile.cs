@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography.X509Certificates;
+using UASigner.Profiles.Exceptions;
 namespace UASigner.Profiles
 {
     public class SignContextProfile
@@ -20,6 +21,15 @@ namespace UASigner.Profiles
         public SignContextProfile()
         {
             KeysInfo = new List<PKInfo>();
+        }
+
+        public virtual void Validate()
+        {
+            if (!System.IO.Directory.Exists(this.CertificatePath))
+            {
+                throw new ConfigurationException(1, String.Format("Directory {0} does not exists!", this.CertificatePath), null);
+            }
+            this.KeysInfo.ForEach(x => x.Validate());
         }
     }
 }

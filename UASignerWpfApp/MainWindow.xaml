@@ -58,9 +58,9 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        <Button Click="Button_Click" Margin="20 0 20 0 ">
-                            Go
-                        </Button>
+                        <WrapPanel>
+                            <Button Click="Button_Click" Margin="20 0 20 0 " Content="Add"></Button>
+                        </WrapPanel>
                     </StackPanel>
                     <StackPanel Grid.Column="3">
                         <StackPanel>
@@ -88,9 +88,10 @@
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
-                            <Button Name="ButtonAdd_PKInfo" Margin="20 0 20 0 " Click="ButtonAdd_PKInfo_Click">
-                                Go
-                            </Button>
+                            <WrapPanel>
+                                <Button Name="ButtonAdd_PKInfo" Margin="20 0 20 0 " Click="ButtonAdd_PKInfo_Click" Content="Add"></Button>
+                            </WrapPanel>
+                            
                         </StackPanel>
 
                     </StackPanel>
