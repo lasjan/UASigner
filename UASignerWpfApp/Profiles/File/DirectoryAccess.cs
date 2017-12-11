@@ -47,10 +47,14 @@ namespace UASigner.Profiles
             {
                 using(MemoryStream ms = new MemoryStream())
                 {
-                    document.DocumentStream.CopyTo(ms);
-                    FileDocument fd = new FileDocument(directoryInfo.FullName + "\\" + document.DocumentName);
-                    var bytes = ms.ToArray();
-                    fd.DocumentStream.Write(bytes, 0, bytes.Length);
+                    using (var ds = document.DocumentStream)
+                    {
+                        ds.CopyTo(ms);
+                        FileDocument fd = new FileDocument(directoryInfo.FullName + "\\" + document.DocumentName);
+                        var bytes = ms.ToArray();
+                        fd.DocumentStream.Write(bytes, 0, bytes.Length);
+                        
+                    }
                 }
             }
         }
@@ -69,7 +73,19 @@ namespace UASigner.Profiles
         public override void RemoveDocument(IDocument document, bool withBackup)
         {
             if (withBackup)
-            { 
+            {
+                if (this.backup == null)
+                {
+                    try
+                    {
+                        if (!Directory.Exists(this.directoryInfo.FullName + "\\backup"))
+                        {
+                            Directory.CreateDirectory(this.directoryInfo.FullName + "\\backup");
+                        }
+                        this.backup = new DirectoryAccess(this.directoryInfo.FullName + "\\backup", this.fileMask);
+                    }
+                    catch { }
+                }
                 if(this.backup == null)
                 {
                     throw new Exceptions.ConfigurationException(1, "Backup folder has to be spefied when 'withBackup=true' invke", null);
