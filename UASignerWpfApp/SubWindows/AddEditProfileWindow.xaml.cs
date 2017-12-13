@@ -27,7 +27,7 @@ namespace UASigner.WpfApp.SubWindows
         public event AddEditProfileDelegate MyEvent;
         IProfile profile;
         Configuration cfg = ConfigurationManager.GetConfiguration();
-        AccessType chosenAccessType = AccessType.Directory;
+        WorkMode workMode;
         PkInfoProvider pkInfoProvider;
         TsInfoProvider tsInfoProvider;
         List<LocationAccess> tmpLocationList;
@@ -35,7 +35,7 @@ namespace UASigner.WpfApp.SubWindows
         {
             if (this.MyEvent != null)
             {
-                var ea = new AddEditProfileEventArgs() { ProfileToAdd = newProfile };
+                var ea = new AddEditProfileEventArgs() { ProfileToAdd = newProfile, WorkMode = workMode };
                 this.MyEvent(this, ea);
             }
         }
@@ -43,9 +43,11 @@ namespace UASigner.WpfApp.SubWindows
         public AddEditProfileWindow(IProfile editProfile)
         {
             InitializeComponent();
+            workMode = WorkMode.Add;
             if (editProfile != null)
             {
                 profile = editProfile;
+                workMode = WorkMode.Edit;
             }
             else
             {
@@ -60,11 +62,15 @@ namespace UASigner.WpfApp.SubWindows
         {
             pkInfoProvider = new PkInfoProvider(cfg);
             tsInfoProvider = new TsInfoProvider(cfg);
-            ComboBoxEdit_InAccess.ItemsSource = ResourceManager.GetLocationTypes();
-            ComboBoxEdit_InAccess.SelectedIndex = 0;
+            comboBoxEdit_InAccess.ItemsSource = ResourceManager.GetLocationTypes();
+            comboBoxEdit_InAccess.SelectedIndex = 0;
 
             comboBoxEdit_OutAccess.ItemsSource = ResourceManager.GetLocationTypes();
             comboBoxEdit_OutAccess.SelectedIndex = 0;
+
+            comboBoxEdit_CadesProfile.ItemsSource = ResourceManager.GetCadesProfiles();
+            comboBoxEdit_CadesProfile.SelectedIndex = 0;
+
             ((App)Application.Current).LanguageChangedEvent += AddEditProfileWindow_LanguageChangedEvent;
             List<CheckBoxWrapper> selectKeyList = new List<CheckBoxWrapper>();
             ObservableCollection<CheckBoxWrapper> selectTsList = new ObservableCollection<CheckBoxWrapper>();
@@ -76,7 +82,7 @@ namespace UASigner.WpfApp.SubWindows
             foreach (var ts in tsInfoProvider.Get())
             {
                 CheckBoxWrapper cb = new CheckBoxWrapper(ts) { Selected = false, DispName = ts.Url };
-                cb.PropertyChanged += cb_PropertyChanged;
+                cb.PropertyChanged += cb_TsPropertyChanged;
                 selectTsList.Add(cb);
             }
             this.listView_SelectKeys.ItemsSource = selectKeyList;
@@ -85,21 +91,78 @@ namespace UASigner.WpfApp.SubWindows
             Display();
         }
 
-        void cb_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void cb_TsPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            
+            if (((UASigner.WpfApp.Display.CheckBoxWrapper)(sender)).Selected)
+            {
+                var selectedId = ((UASigner.Profiles.TimeStampServerInfo)(((UASigner.WpfApp.Display.CheckBoxWrapper)(sender)).WrappedObject)).Id;
+                ObservableCollection<CheckBoxWrapper> selectTsList = new ObservableCollection<CheckBoxWrapper>();
+                foreach (var ts in tsInfoProvider.Get())
+                {
+
+                    CheckBoxWrapper cb = new CheckBoxWrapper(ts) { Selected = ts.Id == selectedId, DispName = ts.Url };
+                    cb.PropertyChanged += cb_TsPropertyChanged;
+                    selectTsList.Add(cb);
+                }
+                this.listView_SelectTsInfo.ItemsSource = selectTsList;
+                this.listView_SelectTsInfo.Items.Refresh();
+            }
         }
 
-        void AddEditProfileWindow_LanguageChangedEvent(object sender, EventArgs e)
-        {
-            var i = ComboBoxEdit_InAccess.SelectedIndex;
-            ComboBoxEdit_InAccess.ItemsSource = ResourceManager.GetLocationTypes();
-            ComboBoxEdit_InAccess.SelectedIndex = i;
-        }
+        
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            LocationAccess inLocationAccess = null;
+            var selectedInput = comboBoxEdit_InAccess.SelectedItem as DisplayableAccessType;
+            switch (selectedInput.AccessType)
+            { 
+                case AccessType.Directory:
+                    inLocationAccess = new DirectoryAccess(this.textBox_NewDirectory.Text, this.textBox_NewDirectoryFileMask.Text);
+                    break;
+            }
+            profile.InLocationAccess = inLocationAccess;
+
+            foreach (var tsInfo in this.listView_SelectTsInfo.Items)
+            {
+                var cbItem = tsInfo as CheckBoxWrapper;
+                if (cbItem != null && cbItem.Selected)
+                {
+                    var wrappedTsInfo = cbItem.WrappedObject as UASigner.Profiles.TimeStampServerInfo;
+                    if (wrappedTsInfo != null)
+                    {
+                        this.profile.SignProfile.Tsinfo = wrappedTsInfo;
+                    }
+                }
+            }
+            List<PKInfo> newList = new List<PKInfo>();
+
+            foreach (var tsKeyInfo in this.listView_SelectKeys.Items)
+            {
+                var cbItem = tsKeyInfo as CheckBoxWrapper;
+                
+                if (cbItem != null && cbItem.Selected)
+                {
+                    var wrappedKeyInfo = cbItem.WrappedObject as UASigner.Profiles.PKInfo;
+                    if (wrappedKeyInfo != null)
+                    {
+                        newList.Add(wrappedKeyInfo); 
+                    }
+                }
+
+            }
+            this.profile.SignProfile.KeysInfo = newList;
+
+            this.profile.SignProfile.AddCertificate = (bool)this.checkBox_AddCertificate.IsChecked;
+            this.profile.SignProfile.AddContentTimeStamp = (bool)this.checkBox_AddContentTs.IsChecked;
+            this.profile.SignProfile.AddValidationData = (bool)this.checkBox_AddValidationData.IsChecked;
+
+            var selectedCadesProfile = (this.comboBoxEdit_CadesProfile.SelectedItem as DisplayableCadesProfile);
+            this.profile.SignProfile.Level = selectedCadesProfile.SignLevel;
+
             OnAddEdit(profile);
             this.Close();
+
+            
         }
 
         private void ComboBoxEdit_InAccess_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -112,6 +175,16 @@ namespace UASigner.WpfApp.SubWindows
 
             }
         }
+        private void ComboBoxEdit_CadesProfile_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems != null && e.AddedItems.Count > 0)
+            {
+                var rr = (e.AddedItems[0] as DisplayableCadesProfile);
+                this.textBlock_signProfileDesc.Text = rr.ToolTip;
+            }
+        }
+
+        
 
         private void comboBoxEdit_OutAccess_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -159,13 +232,13 @@ namespace UASigner.WpfApp.SubWindows
         }
         private void ts_cb_Checked(object sender, System.Windows.RoutedEventArgs e)
         {
-            var items = ((System.Windows.Controls.ListBox)(this.listView_SelectTsInfo)).Items.SourceCollection;
-            foreach (var item in items)
-            {
-                var cbItem = (item as CheckBoxWrapper);
-                //if(cbItem != sender as Ch)
-            }
-            this.listView_SelectTsInfo.Items.Refresh();
+            //var items = ((System.Windows.Controls.ListBox)(this.listView_SelectTsInfo)).Items.SourceCollection;
+            //foreach (var item in items)
+            //{
+            //    var cbItem = (item as CheckBoxWrapper);
+            //    //if(cbItem != sender as Ch)
+            //}
+            //this.listView_SelectTsInfo.Items.Refresh();
         }
         private void SwitchAddOutPanel(AccessType accessType)
         {
@@ -206,7 +279,7 @@ namespace UASigner.WpfApp.SubWindows
         {
             if (profile.InLocationAccess is DirectoryAccess)
             {
-                this.ComboBoxEdit_InAccess.SelectedIndex = 0;
+                this.comboBoxEdit_InAccess.SelectedIndex = 0;
                 this.textBox_NewDirectory.Text = (profile.InLocationAccess as DirectoryAccess).DirectoryPath;
                 this.textBox_NewDirectoryFileMask.Text = (profile.InLocationAccess as DirectoryAccess).FileMask;
 
@@ -229,6 +302,46 @@ namespace UASigner.WpfApp.SubWindows
                     }
                 }
             }
+            if (profile.SignProfile != null && profile.SignProfile.Tsinfo != null)
+            {
+                foreach (var tsInfo in this.listView_SelectTsInfo.ItemsSource)
+                { 
+                    CheckBoxWrapper wrapper = tsInfo as CheckBoxWrapper;
+                    if (wrapper != null)
+                    {
+                        TimeStampServerInfo wrappedTsInfo = wrapper.WrappedObject as TimeStampServerInfo;
+                        if (wrappedTsInfo != null)
+                        {
+                            if (profile.SignProfile.Tsinfo.Id == wrappedTsInfo.Id)
+                            {
+                                wrapper.Selected = true;
+                            }
+                        }
+                    }
+                }
+            }
+            if (profile.SignProfile != null)
+            {
+                foreach (var cadesProfile in this.comboBoxEdit_CadesProfile.ItemsSource)
+                {
+                    var cadesDispProfile = cadesProfile as DisplayableCadesProfile;
+                    if(cadesDispProfile!=null)
+                    {
+                        if (cadesDispProfile.SignLevel == profile.SignProfile.Level)
+                        {
+                            this.comboBoxEdit_CadesProfile.SelectedItem = cadesProfile;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (profile.SignProfile != null)
+            {
+                this.checkBox_AddCertificate.IsChecked = profile.SignProfile.AddCertificate;
+                this.checkBox_AddContentTs.IsChecked = profile.SignProfile.AddContentTimeStamp;
+                this.checkBox_AddValidationData.IsChecked = profile.SignProfile.AddValidationData;
+            }
             List<UASigner.WpfApp.Display.DisplayableAccessType> displayableList = new List<DisplayableAccessType>();
             foreach(var la in this.profile.OutLocationAccess)
             {
@@ -238,6 +351,14 @@ namespace UASigner.WpfApp.SubWindows
             this.listBox_OutProfilesList.ItemsSource = displayableList;
 
             this.listBox_OutProfilesList.Items.Refresh();
+        }
+
+
+        void AddEditProfileWindow_LanguageChangedEvent(object sender, EventArgs e)
+        {
+            var i = comboBoxEdit_InAccess.SelectedIndex;
+            comboBoxEdit_InAccess.ItemsSource = ResourceManager.GetLocationTypes();
+            comboBoxEdit_InAccess.SelectedIndex = i;
         }
     }
 }

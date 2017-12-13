@@ -101,6 +101,24 @@ namespace UASigner.Profiles.Configuration
                 }
 
                 signProfile.CertificatePath = cfProile.SignContext.CertPath ?? parsedConfig.CertPath;
+
+                bool addTS = false;
+                Boolean.TryParse(cfProile.SignContext.AddContentTimeStamp, out addTS);
+                signProfile.AddContentTimeStamp = addTS;
+                
+                bool addCert = false;
+                Boolean.TryParse(cfProile.SignContext.AddCertificate, out addCert);
+                signProfile.AddCertificate = addCert;
+
+                bool addVD = false;
+                Boolean.TryParse(cfProile.SignContext.AddValidationData, out addVD);
+                signProfile.AddValidationData = addVD;
+
+                SignatureLevel signatureLevel = SignatureLevel.CADES_BASELINE_B;
+
+                Enum.TryParse<SignatureLevel>(cfProile.SignContext.SignatureProfile, out signatureLevel);
+                signProfile.Level = signatureLevel;
+
                 profile.SignProfile = signProfile; 
                 
                 profiles.Add(profile);
@@ -172,6 +190,10 @@ namespace UASigner.Profiles.Configuration
                 }
 
                 cfProfile.SignContext.CertPath = profile.SignProfile.CertificatePath;
+                cfProfile.SignContext.SignatureProfile = profile.SignProfile.Level.ToString();
+                cfProfile.SignContext.AddValidationData = profile.SignProfile.AddValidationData.ToString();
+                cfProfile.SignContext.AddContentTimeStamp = profile.SignProfile.AddContentTimeStamp.ToString();
+                cfProfile.SignContext.AddCertificate = profile.SignProfile.AddCertificate.ToString();
 
                 cfConfig.Profiles.Add(cfProfile);
             }

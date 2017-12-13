@@ -38,6 +38,12 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
+                                        <StackPanel.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="Edit" Click="MenuItem_ClickEdit" CommandParameter="{Binding Path=Id}"></MenuItem>
+                                                <MenuItem Header="Remove" Click="MenuItem_ClickRemove" CommandParameter="{Binding Path=Id}"> </MenuItem>
+                                            </ContextMenu>
+                                        </StackPanel.ContextMenu>
                                         <Image>
                                             <Image.Source>
                                                 <BitmapImage UriSource="{Binding Path=Icon}"></BitmapImage>

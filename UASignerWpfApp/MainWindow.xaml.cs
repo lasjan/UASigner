@@ -92,8 +92,15 @@ namespace UASigner.WpfApp
 
         void addProfile_MyEvent(object sender, AddEditProfileEventArgs args)
         {
-            var profileToAdd = args.ProfileToAdd;
-            profileProvider.Add(profileToAdd);
+            var profileToAddEdit = args.ProfileToAdd;
+            if (args.WorkMode == WorkMode.Add)
+            {
+                profileProvider.Add(profileToAddEdit);
+            }
+            if (args.WorkMode == WorkMode.Edit)
+            {
+                profileProvider.Edit(profileToAddEdit);
+            }
             Display();
             this.YourListBox.Items.Refresh();
 
@@ -126,6 +133,28 @@ namespace UASigner.WpfApp
             ((App)Application.Current).OnLanguageChange();
         }
 
+        private void MenuItem_ClickEdit(object sender, RoutedEventArgs e)
+        {
+            var commandParam = ((System.Windows.Controls.MenuItem)(sender)).CommandParameter;
+            int profileId = (int)commandParam;
+
+            var toEdit = this.profileProvider.Get().First(x => x.Id == profileId);
+
+            AddEditProfileWindow addProfile = new AddEditProfileWindow(toEdit);
+            addProfile.MyEvent += addProfile_MyEvent;
+            addProfile.Show();
+        }
+        private void MenuItem_ClickRemove(object sender, RoutedEventArgs e)
+        {
+            var commandParam = ((System.Windows.Controls.MenuItem)(sender)).CommandParameter;
+            int profileId = (int)commandParam;
+
+            var toRemove = this.profileProvider.Get().First(x => x.Id == profileId);
+
+            this.profileProvider.Delete(toRemove);
+
+            Display();
+        }
       
     }
 }

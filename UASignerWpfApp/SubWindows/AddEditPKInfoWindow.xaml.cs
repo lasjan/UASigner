@@ -26,18 +26,16 @@ namespace UASigner.WpfApp.SubWindows
     /// </summary>
     public partial class AddEditPKInfoWindow : Window
     {
-        Mode workMode = Mode.Add;
-
         IGenericProviderAction<PKInfo> pkInfoProvider;
         Configuration config;
-
+        WorkMode workMode;
         public event AddEditPkInfoDelegate AddEdit;
 
         public AddEditPKInfoWindow(PKInfo pkinfo)
         {
             if (pkinfo != null)
             {
-                workMode = Mode.Edit;
+                workMode = WorkMode.Edit;
             }
             InitializeComponent();
             Init();

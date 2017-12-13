@@ -9,6 +9,7 @@ namespace UASigner.WpfApp
     public class AddEditProfileEventArgs : EventArgs
     {
         public IProfile ProfileToAdd { get; set; }
+        public WorkMode WorkMode { get; set; }
     }
 
     public delegate void AddEditProfileDelegate (object sender,AddEditProfileEventArgs args);

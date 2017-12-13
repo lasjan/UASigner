@@ -9,15 +9,14 @@ namespace UASigner.Profiles
 {
     public class SignContextProfile
     {
-        public bool DoContentTimestamp
-        {
-            get { return Tsinfo != null; }
-        }
+       
         public List<PKInfo> KeysInfo { get; set; }
         public string CertificatePath { get; set; }
         public TimeStampServerInfo Tsinfo { get; set; }
         public SignatureLevel Level { get; set; }
-
+        public bool AddContentTimeStamp { get; set; }
+        public bool AddCertificate { get; set; }
+        public bool AddValidationData { get; set; }
         public SignContextProfile()
         {
             KeysInfo = new List<PKInfo>();
