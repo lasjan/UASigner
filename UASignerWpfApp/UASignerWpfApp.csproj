@@ -57,6 +57,7 @@
     <Compile Include="AppWindow.cs" />
     <Compile Include="Display\CheckBoxWrapper.cs" />
     <Compile Include="Display\DisplayableAccessType.cs" />
+    <Compile Include="Display\DisplayableCadesProfile.cs" />
     <Compile Include="Display\DisplayableTSInfo.cs" />
     <Compile Include="Profiles\AccessType.cs" />
     <Compile Include="Profiles\Configuration\CFConfig.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Settings\AddEditProfileEventArgs.cs" />
     <Compile Include="Profiles\SignContextProfile.cs" />
     <Compile Include="Profiles\TimeStampServerInfo.cs" />
+    <Compile Include="Settings\WorkMode.cs" />
     <Compile Include="Utils\Serialization.cs" />
     <Page Include="SubTabs\ProcessTab.xaml">
       <SubType>Designer</SubType>

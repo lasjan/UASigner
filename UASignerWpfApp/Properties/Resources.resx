@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="cblistitem_cadesB" xml:space="preserve">
+    <value>CAdES B</value>
+  </data>
+  <data name="cblistitem_cadesC" xml:space="preserve">
+    <value>CAdES C</value>
+  </data>
+  <data name="cblistitem_cadesT" xml:space="preserve">
+    <value>CAdES T</value>
+  </data>
+  <data name="cblistitem_cadesXL" xml:space="preserve">
+    <value>CAdES XL</value>
+  </data>
   <data name="cblistitem_directory" xml:space="preserve">
     <value>Directory</value>
   </data>
@@ -131,5 +143,17 @@
   </data>
   <data name="lbl_settings" xml:space="preserve">
     <value>Settings</value>
+  </data>
+  <data name="toolitip_cadesB" xml:space="preserve">
+    <value>Basic Electronic Signature, the simplest version, containing the SignedInfo, SignatureValue, KeyInfo and SignedProperties. This level combines the old -BES and -EPES levels. </value>
+  </data>
+  <data name="toolitip_cadesC" xml:space="preserve">
+    <value>CAdES-C adds to the CAdES-T the complete-certificate-references and complete-revocation-references attributes.</value>
+  </data>
+  <data name="toolitip_cadesT" xml:space="preserve">
+    <value>B-Level for which a Trust Service Provider has generated a trusted token (time-mark or time-stamp token) proving that the signature itself actually existed at a certain date and time.</value>
+  </data>
+  <data name="toolitip_cadesXL" xml:space="preserve">
+    <value>CAdES-X Long adds the certificate-values and revocation-values attributes to the CAdES-C format.</value>
   </data>
 </root>

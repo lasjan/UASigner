@@ -25,5 +25,17 @@ namespace UASigner.Profiles.Configuration
 
         [XmlElement("CertPath")]
         public string CertPath { get; set; }
+
+        [XmlElement]
+        public string SignatureProfile { get; set; }
+
+        [XmlElement]
+        public string AddContentTimeStamp { get; set; }
+
+        [XmlElement]
+        public string AddCertificate { get; set; }
+
+        [XmlElement]
+        public string AddValidationData { get; set; }
     }
 }

@@ -61,6 +61,42 @@ namespace UASigner.WpfApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CAdES B.
+        /// </summary>
+        public static string cblistitem_cadesB {
+            get {
+                return ResourceManager.GetString("cblistitem_cadesB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CAdES C.
+        /// </summary>
+        public static string cblistitem_cadesC {
+            get {
+                return ResourceManager.GetString("cblistitem_cadesC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CAdES T.
+        /// </summary>
+        public static string cblistitem_cadesT {
+            get {
+                return ResourceManager.GetString("cblistitem_cadesT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CAdES XL.
+        /// </summary>
+        public static string cblistitem_cadesXL {
+            get {
+                return ResourceManager.GetString("cblistitem_cadesXL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Directory.
         /// </summary>
         public static string cblistitem_directory {
@@ -102,6 +138,42 @@ namespace UASigner.WpfApp.Properties {
         public static string lbl_settings {
             get {
                 return ResourceManager.GetString("lbl_settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Basic Electronic Signature, the simplest version, containing the SignedInfo, SignatureValue, KeyInfo and SignedProperties. This level combines the old -BES and -EPES levels. .
+        /// </summary>
+        public static string toolitip_cadesB {
+            get {
+                return ResourceManager.GetString("toolitip_cadesB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CAdES-C adds to the CAdES-T the complete-certificate-references and complete-revocation-references attributes..
+        /// </summary>
+        public static string toolitip_cadesC {
+            get {
+                return ResourceManager.GetString("toolitip_cadesC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to B-Level for which a Trust Service Provider has generated a trusted token (time-mark or time-stamp token) proving that the signature itself actually existed at a certain date and time..
+        /// </summary>
+        public static string toolitip_cadesT {
+            get {
+                return ResourceManager.GetString("toolitip_cadesT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CAdES-X Long adds the certificate-values and revocation-values attributes to the CAdES-C format..
+        /// </summary>
+        public static string toolitip_cadesXL {
+            get {
+                return ResourceManager.GetString("toolitip_cadesXL", resourceCulture);
             }
         }
     }

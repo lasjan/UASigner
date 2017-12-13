@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="cblistitem_cadesB" xml:space="preserve">
+    <value>CAdES B</value>
+  </data>
+  <data name="cblistitem_cadesC" xml:space="preserve">
+    <value>CAdES C</value>
+  </data>
+  <data name="cblistitem_cadesT" xml:space="preserve">
+    <value>CAdES T</value>
+  </data>
+  <data name="cblistitem_cadesXL" xml:space="preserve">
+    <value>CAdES XL</value>
+  </data>
   <data name="cblistitem_directory" xml:space="preserve">
     <value>Katalog</value>
   </data>

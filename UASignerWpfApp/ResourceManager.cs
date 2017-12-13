@@ -13,6 +13,36 @@ namespace UASigner.WpfApp
         static List<CultureFlag> cultureFlags;
         public static string ResourceNs { get; set; }
 
+        public static List<DisplayableCadesProfile> GetCadesProfiles()
+        {
+            List<DisplayableCadesProfile> list = new List<DisplayableCadesProfile>();
+            list.Add(new DisplayableCadesProfile { Id = 0, SignLevel = Profiles.SignatureLevel.CADES_BASELINE_B, DispName = GetStringResource("cblistitem_cadesB", "CAdES B"),
+                                                   ToolTip = GetStringResource("toolitip_cadesB", "CAdES B desc")
+            });
+            list.Add(new DisplayableCadesProfile
+            {
+                Id = 1,
+                SignLevel = Profiles.SignatureLevel.CADES_BASELINE_T,
+                DispName = GetStringResource("cblistitem_cadesT", "CAdES T"),
+                ToolTip = GetStringResource("toolitip_cadesT", "CAdES T desc")
+            });
+            list.Add(new DisplayableCadesProfile
+            {
+                Id = 2,
+                SignLevel = Profiles.SignatureLevel.CADES_101733_C,
+                DispName = GetStringResource("cblistitem_cadesC", "CAdES C"),
+                ToolTip = GetStringResource("toolitip_cadesC", "CAdES C desc")
+            });
+            list.Add(new DisplayableCadesProfile
+            {
+                Id = 3,
+                SignLevel = Profiles.SignatureLevel.CADES_101733_X_LONG,
+                DispName = GetStringResource("cblistitem_cadesXL", "CAdES XL"),
+                ToolTip = GetStringResource("toolitip_cadesXL", "CAdES XL desc")
+            });
+
+            return list;
+        }
         public static List<DisplayableAccessType> GetLocationTypes()
         {
             List<DisplayableAccessType> list = new List<DisplayableAccessType>();
