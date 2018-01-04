@@ -6,20 +6,22 @@ using System.Threading.Tasks;
 using UASigner.Profiles.Providers;
 using UASigner.Service.Configuration;
 using UASigner.Profiles;
+using UASigner.Profiles.Configuration;
 namespace UASigner.Service
 {
     public abstract class Service:IService
     {
-        protected ServiceConfiguration config;
+        protected UASigner.Profiles.Configuration.Configuration config;
+        protected ServiceConfiguration serviceConfig;
         protected IGenericProviderAction<IProfile> profileProvider;
         protected List<IObserver<ServiceMessage>> observers = new List<IObserver<ServiceMessage>>();
         protected IServiceController serviceController;
-        public Service(ServiceConfiguration config,IServiceController serviceController, IGenericProviderAction<IProfile> profileProvider)
+        public Service(UASigner.Profiles.Configuration.Configuration config, IServiceController serviceController)
         {
             this.config = config;
-            this.profileProvider = profileProvider;
+            this.serviceConfig = config.GetServiceConfiguration();
+            this.profileProvider = new ProfileProvider(config);
             this.serviceController = serviceController;
-
             this.serviceController.StartInvoke += serviceController_StartInvoke;
             this.serviceController.StopInvoke += serviceController_StopInvoke;
             Init();

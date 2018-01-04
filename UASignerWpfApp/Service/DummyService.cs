@@ -15,22 +15,22 @@ namespace UASigner.Service
         CancellationTokenSource tokenSource;
         CancellationToken cancelationToken;
 
-        public DummyService(ServiceConfiguration config, IServiceController serviceController, IGenericProviderAction<IProfile> profileProvider)
-            : base(config,serviceController, profileProvider)
+        public DummyService(UASigner.Profiles.Configuration.Configuration config, IServiceController serviceController)
+            : base(config, serviceController)
         { }
         private void DoWork()
         {
             t = Task.Factory.StartNew(() =>
             {
-                ServiceMessage message = new ServiceMessage { State = ServiceState.Started, Message = "Started" };
+                ServiceMessage message = new ServiceMessage { State = ServiceState.Starting, Message = "Starting.." };
+
                 foreach (var observer in observers)
                 {
                     observer.OnNext(message);
                 }
-
                 while (true)
                 {
-                    System.Threading.Thread.Sleep(this.config.GetIdleTime());
+                    System.Threading.Thread.Sleep(this.serviceConfig.GetIdleTime());
                     
                     message = new ServiceMessage { State = ServiceState.Started, Message = "Working.." + DateTime.Now.ToString() };
                     foreach (var observer in observers)
@@ -57,17 +57,13 @@ namespace UASigner.Service
         }
         public override void Start()
         {
-            ServiceMessage message = new ServiceMessage { State = ServiceState.Starting,  Message ="Starting.."};
-            foreach (var observer in observers)
-            {
-                observer.OnNext(message);
-            }
+            tokenSource = new CancellationTokenSource();
+            cancelationToken = tokenSource.Token;
 
             DoWork();
 
            
         }
-
         public override void Stop()
         {
             ServiceMessage message = new ServiceMessage { State = ServiceState.Stopping, Message = "Stopping.." };
@@ -82,8 +78,14 @@ namespace UASigner.Service
         }
         public override void Init()
         {
-            tokenSource = new CancellationTokenSource();
-            cancelationToken = tokenSource.Token;
+            this.config.ConfigurationChanged += config_ConfigurationChanged;
+        }
+
+        void config_ConfigurationChanged(object sender, EventArgs e)
+        {
+            Stop();
+            ServiceMessage message = new ServiceMessage { State = ServiceState.Stopping, Message = "Reloading.." };
+            Start();
         }
 
     }

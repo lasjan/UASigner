@@ -202,11 +202,20 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" ></RowDefinition>
                         <RowDefinition Height="*" ></RowDefinition>
+                        <RowDefinition Height="*" ></RowDefinition>
                     </Grid.RowDefinitions>
                     <Label Content="State"></Label>
                     <TextBlock Text="{Binding ServiceMessage.State}" Grid.Column="1"></TextBlock>
                     <Label Content="Message" Grid.Column="0" Grid.Row="1"></Label>
                     <TextBlock Text="{Binding ServiceMessage.Message}" Grid.Column="1" Grid.Row="1"></TextBlock>
+                    <StackPanel Grid.ColumnSpan="2" Grid.Row="2" Orientation="Horizontal">
+                        <WrapPanel>
+                            <Button Content="Start" Margin="5" Padding="3" Command="{Binding ServiceStart}"></Button>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <Button Content="Stop"  Margin="5" Padding="3" Command="{Binding ServiceStop}"></Button>
+                        </WrapPanel>  
+                    </StackPanel>
                 </Grid>
                     
             </StackPanel>

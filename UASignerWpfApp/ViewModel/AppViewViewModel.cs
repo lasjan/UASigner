@@ -41,6 +41,9 @@ namespace UASigner.WpfApp.ViewModel
 
         public ICommand RootFolderEdit { get { return new CommandHandler(ExecuteRootFolderEdit, () => { return true; }); } }
 
+        public ICommand ServiceStart { get { return new CommandHandler(ExecuteServiceStart, () => { return true; }); } }
+        public ICommand ServiceStop { get { return new CommandHandler(ExecuteServiceStop, () => { return true; }); } }
+
         ServiceMessageModel serviceMessage;
         public ServiceMessageModel ServiceMessage
         {
@@ -166,9 +169,16 @@ namespace UASigner.WpfApp.ViewModel
             o.DataContext = vm;
             o.Show();
         }
+        void ExecuteServiceStop(object parameter)
+        {
+            OnServiceStopInvoke();
+        }
+        void ExecuteServiceStart(object parameter)
+        {
+            OnServiceStartInvoke();
+        }
 
-
-
+        
         public void OnCompleted()
         {
             //throw new NotImplementedException();
