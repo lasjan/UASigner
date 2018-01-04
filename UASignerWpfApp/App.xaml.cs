@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using UASigner.Profiles.Configuration;
 using UASigner.Profiles;
+using UASigner.Profiles.Providers;
+using UASigner.Service;
 namespace UASigner.WpfApp
 {
     /// <summary>
@@ -28,12 +30,20 @@ namespace UASigner.WpfApp
             ResourceManager.ResourceNs = "UASigner.WpfApp.Properties.Resources";
             ResourceManager.SetCulture("en-US");
 
+            IGenericProviderAction<IProfile> profileProvider = new ProfileProvider(ConfigurationManager.GetConfiguration());
+            
+            
             UASigner.WpfApp.View.AppView appView = new View.AppView();
             UASigner.WpfApp.ViewModel.AppViewViewModel appViewModel = new ViewModel.AppViewViewModel(ConfigurationManager.GetConfiguration());
+
+            DummyService service = new DummyService(ConfigurationManager.GetConfiguration().GetServiceConfiguration(), appViewModel,profileProvider);
+            service.Subscribe(appViewModel);
+
 
             appView.DataContext = appViewModel;
 
             appView.Show();
+            service.Start();
         }
 
         public void OnLanguageChange()

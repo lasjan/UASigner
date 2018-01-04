@@ -12,10 +12,14 @@ using UASigner.WpfApp.SubWindows;
 using UASigner.WpfApp.Providers;
 using UASigner.WpfApp.Model;
 using System.Windows.Input;
+using UASigner.Service;
 namespace UASigner.WpfApp.ViewModel
 {
-    public class AppViewViewModel : ViewModelBase, IObserver<RootFolderModel>
+    public class AppViewViewModel : ViewModelBase, IObserver<RootFolderModel>, IObserver<ServiceMessage>, IServiceController
     {
+        public event EventHandler StopInvoke;
+        public event EventHandler StartInvoke;
+
         Configuration config;
         IModelGenericProviderAction<PkInfoModel> pkInfoModelProvider;
         IModelGenericProviderAction<ProfileModel> profileModelProvider;
@@ -178,6 +182,28 @@ namespace UASigner.WpfApp.ViewModel
         public void OnNext(RootFolderModel value)
         {
             this.RootFolder = value;
+        }
+
+
+        public void OnNext(Service.ServiceMessage value)
+        {
+            ServiceMessageModel messageModel = new ServiceMessageModel { Message = value.Message, State = value.State };
+            this.ServiceMessage = messageModel;
+        }
+
+        void OnServiceStopInvoke()
+        {
+            if (this.StopInvoke != null)
+            {
+                StopInvoke(this, null);
+            }
+        }
+        void OnServiceStartInvoke()
+        {
+            if (this.StartInvoke != null)
+            {
+                StartInvoke(this, null);
+            }
         }
     }
 }

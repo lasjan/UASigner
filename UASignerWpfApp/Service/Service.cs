@@ -5,23 +5,40 @@ using System.Text;
 using System.Threading.Tasks;
 using UASigner.Profiles.Providers;
 using UASigner.Service.Configuration;
+using UASigner.Profiles;
 namespace UASigner.Service
 {
     public abstract class Service:IService
     {
-        ServiceConfiguration config;
-        IProfileProvider profileProvider;
-        private List<IObserver<ServiceMessage>> observers;
-
-        public Service(ServiceConfiguration config, IProfileProvider profileProvider)
+        protected ServiceConfiguration config;
+        protected IGenericProviderAction<IProfile> profileProvider;
+        protected List<IObserver<ServiceMessage>> observers = new List<IObserver<ServiceMessage>>();
+        protected IServiceController serviceController;
+        public Service(ServiceConfiguration config,IServiceController serviceController, IGenericProviderAction<IProfile> profileProvider)
         {
             this.config = config;
             this.profileProvider = profileProvider;
+            this.serviceController = serviceController;
+
+            this.serviceController.StartInvoke += serviceController_StartInvoke;
+            this.serviceController.StopInvoke += serviceController_StopInvoke;
             Init();
 
         }
+
+        void serviceController_StopInvoke(object sender, EventArgs e)
+        {
+            Stop();
+        }
+
+        void serviceController_StartInvoke(object sender, EventArgs e)
+        {
+            Start();  
+        }
+
         public virtual void Init()
-        {}
+        {
+        }
        
         public IDisposable Subscribe(IObserver<ServiceMessage> observer)
         {

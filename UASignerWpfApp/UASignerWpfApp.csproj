@@ -110,6 +110,7 @@
     <Compile Include="Providers\ProfileModelConverter.cs" />
     <Compile Include="Providers\TimestampServerModelConverter.cs" />
     <Compile Include="Providers\ModelTimestampServerProvider.cs" />
+    <Compile Include="Service\DummyService.cs" />
     <Compile Include="Service\IService.cs" />
     <Compile Include="Service\Service.cs" />
     <Compile Include="Service\Configuration\ServiceConfiguration.cs" />
