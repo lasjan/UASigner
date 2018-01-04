@@ -27,7 +27,13 @@ namespace UASigner.WpfApp
             ConfigurationManager.InitWithFile(@"e:\UA\Configuration.xml");
             ResourceManager.ResourceNs = "UASigner.WpfApp.Properties.Resources";
             ResourceManager.SetCulture("en-US");
-            
+
+            UASigner.WpfApp.View.AppView appView = new View.AppView();
+            UASigner.WpfApp.ViewModel.AppViewViewModel appViewModel = new ViewModel.AppViewViewModel(ConfigurationManager.GetConfiguration());
+
+            appView.DataContext = appViewModel;
+
+            appView.Show();
         }
 
         public void OnLanguageChange()

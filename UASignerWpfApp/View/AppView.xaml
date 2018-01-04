@@ -1,0 +1,215 @@
+﻿<Window x:Class="UASigner.WpfApp.View.AppView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewmodel ="clr-namespace:UASigner.WpfApp.ViewModel"
+        Title="AppView" Height="700" Width="500"
+        x:Name="root"
+        >
+    <Window.Resources>
+        <viewmodel:LocationTypeToIconConverter x:Key="inLocationToIconConverter"></viewmodel:LocationTypeToIconConverter>
+        <viewmodel:PkInfoTypeToIconConverter x:Key="pkInfoToIconConverter"></viewmodel:PkInfoTypeToIconConverter>
+        <viewmodel:TimestampToIconConverter x:Key="tsToIconConverter"></viewmodel:TimestampToIconConverter>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="200"></RowDefinition>
+            <RowDefinition Height="*" ></RowDefinition>
+            <RowDefinition Height="*" ></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.ColumnSpan="2" Grid.Row="0">
+            <DockPanel Margin="5">
+                <Label DockPanel.Dock="Top" Style="{StaticResource HeaderStyle}">Root Folder</Label>
+                <Border Style="{StaticResource ContentStyle}" DockPanel.Dock="Bottom" Margin="0 5 0 0">
+                    <StackPanel Margin="0 5 0 0">
+                        <TextBox IsReadOnly="True" Text="{Binding Path=RootFolder.RootPath}" Background="WhiteSmoke" Foreground="Gray"></TextBox>
+                        <WrapPanel HorizontalAlignment="Right">
+                            <Button Content="Edit"  Command="{Binding RootFolderEdit}" Style="{StaticResource LinkButton}"></Button>
+                        </WrapPanel>
+                    </StackPanel>     
+                </Border>
+            </DockPanel>
+        </StackPanel>
+        <StackPanel Grid.ColumnSpan="2" Grid.Row="1">
+            <DockPanel Margin="5">
+                <Label DockPanel.Dock="Top" Style="{StaticResource HeaderStyle}">Profiles</Label>
+                <Border Style="{StaticResource ContentStyle}" DockPanel.Dock="Bottom" Padding="3 5 3 5">
+                    <StackPanel>
+                        <ListBox  MinHeight="100" ItemsSource="{Binding Path=ProfileList}">
+                            <ListBox.Template>
+                                <ControlTemplate>
+                                    <DockPanel LastChildFill="True">
+                                        <Grid DockPanel.Dock="Top" Height="30" Background="#FFB4CDEC">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" BorderBrush="#FF8FA9E0" BorderThickness="0 0 0 1" Content="Type">
+                                            </Label>
+                                            <Label Grid.Column="1" BorderBrush="#FF8FA9E0" BorderThickness="0 0 0 1" Content="Description"></Label>
+                                        </Grid>
+                                        <ItemsPresenter></ItemsPresenter>
+                                    </DockPanel>
+                                </ControlTemplate>
+                            </ListBox.Template>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,2" Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.ContextMenu>
+                                            <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                                                <MenuItem Header="Edit"  Command="{Binding ProfileItemEdit}"  CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"></MenuItem>
+                                                <MenuItem Header="Remove" Command="{Binding ProfileItemDelete}"  CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"></MenuItem>
+                                            </ContextMenu>
+                                        </Grid.ContextMenu>
+                                        <Image Height="16" HorizontalAlignment="Left">
+                                            <Image.Source>
+                                                <BitmapImage UriSource="{Binding  Converter={StaticResource inLocationToIconConverter}, Path=InLocationAccess}"></BitmapImage>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock Text="{Binding Path=DisplayName}" Grid.Column="1"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <WrapPanel HorizontalAlignment="Right">
+                            <Button Content="Add"  Command="{Binding ProfileItemAdd}" Style="{StaticResource LinkButton}"></Button>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+            </DockPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="2">
+            <DockPanel Margin="5">
+                <Label DockPanel.Dock="Top" Style="{StaticResource HeaderStyle}">Keys</Label>
+                <Border Style="{StaticResource ContentStyle}" DockPanel.Dock="Bottom" Padding="3 5 3 5">
+                    <StackPanel>
+                        <ListBox MinHeight="100" ItemsSource="{Binding PkInfoList}">
+                            <ListBox.Template>
+                                <ControlTemplate>
+                                    <DockPanel LastChildFill="True">
+                                        <Grid DockPanel.Dock="Top" Height="30" Background="#FFB4CDEC">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" BorderBrush="#FF8FA9E0" BorderThickness="0 0 0 1" Content="Type">
+                                            </Label>
+                                            <Label Grid.Column="1" BorderBrush="#FF8FA9E0" BorderThickness="0 0 0 1" Content="Description"></Label>
+                                        </Grid>
+                                        <ItemsPresenter></ItemsPresenter>
+                                    </DockPanel>
+                                </ControlTemplate>
+                            </ListBox.Template>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,2" Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.ContextMenu>
+                                            <ContextMenu DataContext="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                                                <MenuItem Header="Edit"  Command="{Binding KeyItemEdit}"  CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                <MenuItem Header="Remove" Command="{Binding KeyItemDelete}"  CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                            </ContextMenu>
+                                        </Grid.ContextMenu>
+                                        <Image Height="16" HorizontalAlignment="Left">
+                                            <Image.Source>
+                                                <BitmapImage UriSource="{Binding Converter={StaticResource pkInfoToIconConverter}}"/>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock Text="{Binding Alias}" Grid.Column="1"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <WrapPanel HorizontalAlignment="Right">
+                            <Button Content="Add"  Command="{Binding KeyItemAdd}" Style="{StaticResource LinkButton}"/>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+            </DockPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="2">
+            <DockPanel Margin="5">
+                <Label DockPanel.Dock="Top" Style="{StaticResource HeaderStyle}">Timestamp Servers</Label>
+                <Border Style="{StaticResource ContentStyle}" DockPanel.Dock="Bottom" Padding="3 5 3 5">
+                    <StackPanel>
+                        <ListBox MinHeight="100" ItemsSource="{Binding Path=TimestampServerList}" BorderThickness="0">
+                            <ListBox.Template>
+                                <ControlTemplate>
+                                    <DockPanel LastChildFill="True">
+                                        <Grid DockPanel.Dock="Top" Height="30" Background="#FFB4CDEC">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" BorderBrush="#FF8FA9E0" BorderThickness="0 0 0 1" Content="Type">
+                                            </Label>
+                                            <Label Grid.Column="1" BorderBrush="#FF8FA9E0" BorderThickness="0 0 0 1" Content="Description"></Label>
+                                        </Grid>
+                                        <ItemsPresenter></ItemsPresenter>
+                                    </DockPanel>
+                                </ControlTemplate>
+                            </ListBox.Template>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,2" Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.ContextMenu>
+                                            <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                                                <MenuItem Header="Edit"  Command="{Binding TsItemEdit}"  CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"></MenuItem>
+                                                <MenuItem Header="Remove" Command="{Binding TsItemDelete}"  CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"></MenuItem>
+                                            </ContextMenu>
+                                        </Grid.ContextMenu>
+                                        <Image Height="16" HorizontalAlignment="Left">
+                                            <Image.Source>
+                                                <BitmapImage UriSource="{Binding  Converter={StaticResource tsToIconConverter}}"></BitmapImage>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock Text="{Binding Path=Url}" Grid.Column="1"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <WrapPanel HorizontalAlignment="Right">
+                            <Button Content="Add"  Command="{Binding TsItemAdd}" Style="{StaticResource LinkButton}"></Button>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+            </DockPanel>
+        </StackPanel>
+        <StackPanel Grid.ColumnSpan="2" Grid.Row="3">
+            <Label DockPanel.Dock="Top" Style="{StaticResource HeaderStyle}">Service</Label>
+            <StackPanel DockPanel.Dock="Bottom" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" ></RowDefinition>
+                        <RowDefinition Height="*" ></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Content="State"></Label>
+                    <TextBlock Text="{Binding ServiceMessage.State}" Grid.Column="1"></TextBlock>
+                    <Label Content="Message" Grid.Column="0" Grid.Row="1"></Label>
+                    <TextBlock Text="{Binding ServiceMessage.Message}" Grid.Column="1" Grid.Row="1"></TextBlock>
+                </Grid>
+                    
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

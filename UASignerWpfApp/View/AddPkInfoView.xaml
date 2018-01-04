@@ -1,0 +1,192 @@
+﻿<Window x:Class="UASigner.WpfApp.View.AddPkInfoView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewmodel ="clr-namespace:UASigner.WpfApp.ViewModel"
+        xmlns:profiles ="clr-namespace:UASigner.Profiles"
+        xmlns:controls ="clr-namespace:UASigner.WpfApp.Controls"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        Title="AddPkInfoView" Height="270" Width="500">
+    <Window.Resources>
+        <viewmodel:SelectedPkInfoTypeToVisConverter x:Key="pkInfoToBoolConverter"></viewmodel:SelectedPkInfoTypeToVisConverter>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
+    <DockPanel Margin="5"   DataContext="{Binding }">
+        <Grid DockPanel.Dock="Top" MaxHeight="180">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <WrapPanel>
+                    <Label Content="Type" Padding="8"></Label>
+                </WrapPanel>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Top" Margin="2 5 2 5"  >
+                    <ComboBox  
+                        Name="c"
+                        ItemsSource="{Binding Path=AvilablePkTypes}"
+                        SelectedItem="{Binding Path=SelectedPkType}"
+                        Margin="0 0 0 0"
+                        MaxWidth="140">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <WrapPanel>
+                                    <TextBlock Text="{Binding Path=KeyTypeName}"></TextBlock>
+                                </WrapPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Column="1" DataContext="{Binding UpdateSourceTrigger=LostFocus}">
+                <!--<Border BorderThickness="1" 
+                        BorderBrush="Yellow"
+                        Style="{StaticResource VisibleAnimation}"
+                        >
+                    <Border.Visibility>
+                        <MultiBinding Converter="{StaticResource pkInfoToBoolConverter}" ConverterParameter="{x:Static profiles:PK_LOCATION.HSM}">
+                            <Binding Path="SelectedPkType"></Binding>  
+                        </MultiBinding>
+                    </Border.Visibility>
+                    <StackPanel>
+                        <Label Content="HSM add"></Label>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Column="1">
+                                <Label Content="Alias"></Label>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <TextBox Text="{Binding Path=Alias}"></TextBox>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>-->
+                <Border BorderThickness="1" 
+
+                        Style="{StaticResource VisibleAnimation}"
+                        >
+                    <Border.Visibility>
+                        <MultiBinding Converter="{StaticResource pkInfoToBoolConverter}" ConverterParameter="{x:Static profiles:PK_LOCATION.FILE}">
+                            <Binding Path="SelectedPkType"></Binding>
+                        </MultiBinding>
+                    </Border.Visibility>
+                    <StackPanel>
+                        <Label Content="File add"></Label>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"></RowDefinition>
+                                <RowDefinition Height="40"></RowDefinition>
+                                <RowDefinition Height="40"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <Label Content="Alias"></Label>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <TextBox Text="{Binding Path=ChosenPkInfo.Alias,NotifyOnValidationError=True}" Validation.ErrorTemplate="{StaticResource validationErrorTemplate}">
+      
+                                </TextBox>
+                                
+                            </StackPanel>
+                            <StackPanel Grid.Column="0" Grid.Row="1">
+                                <Label Content="Password"></Label>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Grid.Row="1">
+                                <TextBox Text="{Binding Path=ChosenPkInfo.Password,NotifyOnValidationError=True}" Validation.ErrorTemplate="{StaticResource validationErrorTemplate}"></TextBox>
+                            </StackPanel>
+                            <StackPanel Grid.Column="0" Grid.Row="2">
+                                <Label Content="FilePath"></Label>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Grid.Row="2">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="20"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Text="{Binding ChosenPkInfo.Location,NotifyOnValidationError=True}" Validation.ErrorTemplate="{StaticResource validationErrorTemplate}"></TextBox>
+                                    <WrapPanel Grid.Column="1"  HorizontalAlignment="Right">
+                                        <Button Content="Search" Style="{StaticResource ShowFolderButton}" Command="{Binding OpenFile}"></Button>
+                                    </WrapPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                        <!--<controls:FileSelector x:Name="t"></controls:FileSelector>-->
+                    </StackPanel>
+                </Border>
+                <Border BorderThickness="1" 
+
+                        Style="{StaticResource VisibleAnimation}"
+                        >
+                    <Border.Visibility>
+                        <MultiBinding Converter="{StaticResource pkInfoToBoolConverter}" ConverterParameter="{x:Static profiles:PK_LOCATION.USBSTICK}">
+                            <Binding Path="SelectedPkType"></Binding>
+                        </MultiBinding>
+                    </Border.Visibility>
+                    <StackPanel>
+                        <Label Content="Usb add"></Label>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <Label Content="Alias"></Label>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <TextBox Text="{Binding Path=ChosenPkInfo.Alias,NotifyOnValidationError=True}" Validation.ErrorTemplate="{StaticResource validationErrorTemplate}"></TextBox>
+                            </StackPanel>
+                            <StackPanel Grid.Column="0" Grid.Row="1">
+                                <Label Content="Password"></Label>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Grid.Row="1">
+                                <TextBox Text="{Binding Path=ChosenPkInfo.Password,NotifyOnValidationError=True}" Validation.ErrorTemplate="{StaticResource validationErrorTemplate}"></TextBox>
+                            </StackPanel>
+                            <StackPanel Grid.Column="0" Grid.Row="2">
+                                <Label Content="VendorDll"></Label>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Grid.Row="2">
+                                <TextBox Text="{Binding ChosenPkInfo.VendorDllPath,NotifyOnValidationError=True}" Validation.ErrorTemplate="{StaticResource validationErrorTemplate}"></TextBox>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+        <StackPanel DockPanel.Dock="Bottom" >
+            <StackPanel>
+                <Rectangle HorizontalAlignment="Stretch" Fill="LightGray" Height="1"/>
+                <DockPanel>
+                    <WrapPanel DockPanel.Dock="Right">
+                        <Button Content="Cancel" Margin="0 5 0 0" Style="{StaticResource LinkButton}" Command="{Binding Cancel}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"></Button>
+                        <Button Content="Save" Margin="0 5 0 0" Style="{StaticResource OkButton}" Command="{Binding Save}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"></Button> 
+                    </WrapPanel>
+                    <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Stretch">
+                        <TextBlock DataContext="{Binding Path=ChosenPkInfo}" Validation.ErrorTemplate="{StaticResource validationErrorTemplate}"></TextBlock>
+                    </StackPanel>
+                </DockPanel>
+                <WrapPanel HorizontalAlignment="Right">
+                    <fa:ImageAwesome Icon="Spinner" Spin="True" SpinDuration="4" Width="16" Visibility="{Binding Path=IsSaving, Converter={StaticResource BoolToVis}}"/>
+                </WrapPanel>
+            </StackPanel>
+            <StackPanel>
+                <!--<TextBox Text="{Binding Path=ChosenPkInfo.Location}"></TextBox>-->
+
+            </StackPanel>
+        </StackPanel>
+    </DockPanel>
+</Window>

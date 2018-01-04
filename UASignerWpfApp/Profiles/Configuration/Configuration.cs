@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UASigner.Profiles;
+using UASigner.Service.Configuration;
 namespace UASigner.Profiles.Configuration
 {
     public abstract class Configuration
@@ -15,6 +16,7 @@ namespace UASigner.Profiles.Configuration
         protected List<TimeStampServerInfo> tsInfos;
         protected string defaultCertPath;
 
+        protected ServiceConfiguration serviceConfig;
         public string GetDefaultCertPath()
         {
             return defaultCertPath;
@@ -58,12 +60,24 @@ namespace UASigner.Profiles.Configuration
             OnConfigurationChanged();
         }
 
+
         private void OnConfigurationChanged()
         {
             if (ConfigurationChanged != null)
             {
                 ConfigurationChanged(this, null);
             }
+        }
+
+        public ServiceConfiguration GetServiceConfiguration()
+        {
+            return this.serviceConfig;
+        }
+        public void SetServiceConfiguration(ServiceConfiguration config)
+        {
+            this.serviceConfig = config;
+            SyncSource();
+            OnConfigurationChanged();
         }
         protected abstract void SyncSource();
 

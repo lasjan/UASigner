@@ -36,6 +36,19 @@ namespace UASigner.Profiles.Configuration
             this.tsInfos = new List<TimeStampServerInfo>();
 
             this.defaultCertPath = parsedConfig.CertPath;
+
+            this.serviceConfig = new Service.Configuration.ServiceConfiguration();
+
+            if (parsedConfig.ServiceConfig != null)
+            {
+                if (parsedConfig.ServiceConfig.Parameters != null)
+                {
+                    if (parsedConfig.ServiceConfig.Parameters.ContainsKey("idleTime"))
+                    {
+                        this.serviceConfig.SetIdleTime(Int32.Parse(parsedConfig.ServiceConfig.Parameters["idleTime"]));
+                    }
+                }
+            }
             foreach (var cfKeyInfo in parsedConfig.CFPKInfos)
             {
                 if (cfKeyInfo.Type.Equals("file",StringComparison.InvariantCultureIgnoreCase))
@@ -70,6 +83,17 @@ namespace UASigner.Profiles.Configuration
                     profile.InLocationAccess = inDirAccess;
                     
                 }
+
+                if (inputAccess.Type.Equals("ftp", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var address = inputAccess.Parameters["address"];
+                    var port = inputAccess.Parameters["port"];
+                    var user = inputAccess.Parameters["user"];
+                    var password = inputAccess.Parameters["password"];
+
+                    FtpAccess inFtpAccess = new FtpAccess(address, Int32.Parse(port), user, password);
+                    profile.InLocationAccess = inFtpAccess;
+                }
                 List<LocationAccess> outAccess = new List<LocationAccess>();
 
                 var outputAccessList = cfProile.OutputLocationsAccess;
@@ -81,6 +105,16 @@ namespace UASigner.Profiles.Configuration
                         var fileMask = outputAccess.Parameters["fileMask"];
                         DirectoryAccess outDirAccess = new DirectoryAccess(dirPath, fileMask);
                         outAccess.Add(outDirAccess);
+                    }
+                    if (outputAccess.Type.Equals("ftp", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        var address = outputAccess.Parameters["address"];
+                        var port = outputAccess.Parameters["port"];
+                        var user = outputAccess.Parameters["user"];
+                        var password = outputAccess.Parameters["password"];
+
+                        FtpAccess outFtpAccess = new FtpAccess(address, Int32.Parse(port), user, password);
+                        outAccess.Add(outFtpAccess);
                     }
                 }
                 profile.OutLocationAccess = outAccess;
@@ -135,6 +169,19 @@ namespace UASigner.Profiles.Configuration
             cfConfig.CFTSInfos = new List<CFTSInfo>();
 
             cfConfig.CertPath = this.defaultCertPath;
+
+            if (this.serviceConfig != null)
+            {
+                CFServiceConfig cfServiceConfig = new CFServiceConfig();
+                cfServiceConfig.Parameters = new SerializableDictionary<string, string>();
+
+                foreach (var p in this.serviceConfig.ConfigDict)
+                {
+                    cfServiceConfig.Parameters.Add(p.Key, p.Value);
+                }
+
+                cfConfig.ServiceConfig = cfServiceConfig;
+            }
             foreach (var pkInfo in this.pkInfos)
             {
                 CFPKInfo cfpPkinfo = new CFPKInfo { Id = (int)pkInfo.Id };
@@ -164,6 +211,17 @@ namespace UASigner.Profiles.Configuration
                     CFLocationAccess inLocation = new CFLocationAccess { Type = "Directory", Parameters = parameters };
                     cfProfile.InputLocationAccess = inLocation;
                 }
+                if (profile.InLocationAccess is FtpAccess)
+                {
+                    var d = (profile.InLocationAccess as FtpAccess);
+                    SerializableDictionary<string, string> parameters = new SerializableDictionary<string, string> { };
+                    parameters.Add("address", d.Address);
+                    parameters.Add("port", d.Port.ToString());
+                    parameters.Add("user", d.UserName);
+                    parameters.Add("password", d.Password);
+                    CFLocationAccess inLocation = new CFLocationAccess { Type = "Ftp", Parameters = parameters };
+                    cfProfile.InputLocationAccess = inLocation;
+                }
                 cfProfile.OutputLocationsAccess = new List<CFLocationAccess>();
                 foreach (var outAccess in profile.OutLocationAccess)
                 {
@@ -174,6 +232,17 @@ namespace UASigner.Profiles.Configuration
                         parameters.Add("dirPath", d.DirectoryPath);
                         parameters.Add("fileMask", d.FileMask);
                         CFLocationAccess outLocation = new CFLocationAccess { Type = "Directory", Parameters = parameters };
+                        cfProfile.OutputLocationsAccess.Add(outLocation);
+                    }
+                    if (outAccess is FtpAccess)
+                    {
+                        var d = (outAccess as FtpAccess);
+                        SerializableDictionary<string, string> parameters = new SerializableDictionary<string, string> { };
+                        parameters.Add("address", d.Address);
+                        parameters.Add("port", d.Port.ToString());
+                        parameters.Add("user", d.UserName);
+                        parameters.Add("password", d.Password);
+                        CFLocationAccess outLocation = new CFLocationAccess { Type = "Ftp", Parameters = parameters };
                         cfProfile.OutputLocationsAccess.Add(outLocation);
                     }
                 }

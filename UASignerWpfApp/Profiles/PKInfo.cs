@@ -7,7 +7,7 @@ using UASigner.Profiles.Providers;
 using UASigner.Profiles.Exceptions;
 namespace UASigner.Profiles
 {
-    public enum PK_LOCATION { FILE};
+    public enum PK_LOCATION { FILE,USBSTICK,HSM};
     public abstract class PKInfo:IItem
     {
         public int? Id { get; set; }

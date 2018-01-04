@@ -8,7 +8,7 @@ namespace UASigner.WpfApp.Display
 {
     public class DisplayableAccessType:IDisplayable
     {
-        LocationAccess la;
+        public LocationAccess LocationAccess { get; protected set; }
         public DisplayableAccessType()
         { 
 
@@ -16,7 +16,7 @@ namespace UASigner.WpfApp.Display
 
         public DisplayableAccessType(LocationAccess la)
         {
-            this.la = la;
+            this.LocationAccess = la;
 
             if (la is DirectoryAccess)
             {

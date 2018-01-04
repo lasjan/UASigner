@@ -107,7 +107,16 @@
             <TabItem Header="Process">
                 <tabData:ProcessTab></tabData:ProcessTab>
             </TabItem>
-            <TabItem Header="Details" />
+            <TabItem Header="Details" >
+                <StackPanel Margin="10">
+                    <ComboBox>
+                        <ComboBoxItem>ComboBox Item #1</ComboBoxItem>
+                        <ComboBoxItem IsSelected="True">ComboBox Item #2</ComboBoxItem>
+                        <ComboBoxItem>ComboBox Item #3</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+            </TabItem>
+            
         </TabControl>
 
     </Grid>

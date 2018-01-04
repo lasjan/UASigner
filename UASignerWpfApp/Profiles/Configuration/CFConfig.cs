@@ -26,5 +26,9 @@ namespace UASigner.Profiles.Configuration
 
         [XmlElement("GlobalCertPath")]
         public string CertPath { get; set; }
+
+        [XmlElement("Service")]
+        public CFServiceConfig ServiceConfig { get; set; }
+        
     }
 }

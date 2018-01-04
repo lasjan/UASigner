@@ -17,7 +17,8 @@ using UASigner.WpfApp.Display;
 using UASigner.Profiles.Providers;
 using UASigner.Profiles.Configuration;
 using UASigner.WpfApp.SubWindows;
-
+using UASigner.WpfApp.Providers;
+using UASigner.WpfApp.Model;
 namespace UASigner.WpfApp
 {
    
@@ -29,6 +30,7 @@ namespace UASigner.WpfApp
         //List<ILocationDisplay> list = new List<ILocationDisplay>();
         IGenericProviderAction<IProfile> profileProvider;
         IGenericProviderAction<PKInfo> pkInfoProvider;
+        IModelGenericProviderAction<PkInfoModel> pkInfoModelprovider;
         Configuration config;
         public MainWindow()
         {
@@ -43,6 +45,11 @@ namespace UASigner.WpfApp
             profileProvider = new ProfileProvider(config);
             pkInfoProvider = new PkInfoProvider(config);
             pkInfoProvider.AddObserver(profileProvider);
+
+            pkInfoModelprovider = new ModelPkInfoProvider(pkInfoProvider);
+
+            var test = pkInfoModelprovider.Get().ToList();
+            
             //var firstPk = pkInfoProvider.Get().First();
             //firstPk.Alias = firstPk.Alias + "_changed";
             //pkInfoProvider.Edit(firstPk);
@@ -50,8 +57,13 @@ namespace UASigner.WpfApp
             var pppp = profileProvider.Get();
             ComboBox_Language.ItemsSource = ResourceManager.GetCultureFlags();
             ComboBox_Language.SelectedValuePath = "Culture";
-           
 
+            var o = new UASigner.WpfApp.View.AddPkInfoView();
+
+            var vm = new UASigner.WpfApp.ViewModel.AddPkInfoViewModel(pkInfoModelprovider, null);
+
+            o.DataContext = vm;
+            o.Show();
             Display();
         }
 

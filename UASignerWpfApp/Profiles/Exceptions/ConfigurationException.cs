@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using UASigner.Exceptions;
 namespace UASigner.Profiles.Exceptions
 {
-    public class ConfigurationException:Exception
+    public class ConfigurationException : Exception, IVisualException
     {
         int code;
         string[] parameters;

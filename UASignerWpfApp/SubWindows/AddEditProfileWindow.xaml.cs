@@ -16,7 +16,7 @@ using UASigner.WpfApp.Display;
 using UASigner.Profiles.Providers;
 using UASigner.Profiles.Configuration;
 using System.Collections.ObjectModel;
- 
+using Microsoft.Win32;
 namespace UASigner.WpfApp.SubWindows
 {
     /// <summary>
@@ -30,7 +30,7 @@ namespace UASigner.WpfApp.SubWindows
         WorkMode workMode;
         PkInfoProvider pkInfoProvider;
         TsInfoProvider tsInfoProvider;
-        List<LocationAccess> tmpLocationList;
+        List<LocationAccess> tmpOutLocationList;
         protected void OnAddEdit(IProfile newProfile)
         {
             if (this.MyEvent != null)
@@ -44,15 +44,20 @@ namespace UASigner.WpfApp.SubWindows
         {
             InitializeComponent();
             workMode = WorkMode.Add;
+            tmpOutLocationList = new List<LocationAccess>();
             if (editProfile != null)
             {
                 profile = editProfile;
+                if (profile.OutLocationAccess != null)
+                {
+                    profile.OutLocationAccess.ToList().ForEach(x => { tmpOutLocationList.Add(x); });
+                }
+
                 workMode = WorkMode.Edit;
             }
             else
             {
                 var userProf = System.Environment.GetEnvironmentVariable("USERPROFILE");
-
                 SignContextProfile csp = new SignContextProfile { CertificatePath = cfg.GetDefaultCertPath(), KeysInfo = new List<PKInfo>(), Level = SignatureLevel.CADES_BASELINE_B, Tsinfo = new TimeStampServerInfo() };
                 profile = new GenericProfile { OutLocationAccess = new List<LocationAccess>(), InLocationAccess = new DirectoryAccess(userProf, "*.*"), SignProfile = csp };
             }
@@ -122,6 +127,7 @@ namespace UASigner.WpfApp.SubWindows
             }
             profile.InLocationAccess = inLocationAccess;
 
+            profile.OutLocationAccess = tmpOutLocationList;
             foreach (var tsInfo in this.listView_SelectTsInfo.Items)
             {
                 var cbItem = tsInfo as CheckBoxWrapper;
@@ -200,11 +206,14 @@ namespace UASigner.WpfApp.SubWindows
         {
             panel_AddSingleOutput.Visibility = System.Windows.Visibility.Visible;
             btn_AddOutput.Visibility = System.Windows.Visibility.Collapsed;
+            textBlock_EmptyOutputList.Visibility = System.Windows.Visibility.Collapsed;
         }
         private void btn_CancelOutProfileClick(object sender, RoutedEventArgs e)
         {
             panel_AddSingleOutput.Visibility = System.Windows.Visibility.Collapsed;
             btn_AddOutput.Visibility = System.Windows.Visibility.Visible;
+
+            Display();
         }
         private void btn_SavelOutProfileClick(object sender, RoutedEventArgs e)
         {
@@ -222,14 +231,50 @@ namespace UASigner.WpfApp.SubWindows
 
             if (la != null)
             {
-                var current = profile.OutLocationAccess;
-                var newList = current.ToList();
-                newList.Add(la);
-                profile.OutLocationAccess = newList;
+                tmpOutLocationList.Add(la);
             }
 
             Display();
         }
+        private void btn_newDirectoryDialogClick(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.FolderBrowserDialog browseFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
+            System.Windows.Forms.DialogResult result = browseFolderDialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                textBox_NewDirectory.Text = browseFolderDialog.SelectedPath;
+            }
+            
+        }
+        private void btn_outNewDirectoryDialogClick(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.FolderBrowserDialog browseFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
+            System.Windows.Forms.DialogResult result = browseFolderDialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                textBox_OutNewDirectory.Text = browseFolderDialog.SelectedPath;
+            }
+            
+        }
+        private void listBox_OutProfilesList_Remove(object sender, RoutedEventArgs e)
+        {
+            var commandParam = ((System.Windows.Controls.MenuItem)(sender)).CommandParameter;
+            int profileId = (int)commandParam;
+            var items = (this.listBox_OutProfilesList.ItemsSource as List<UASigner.WpfApp.Display.DisplayableAccessType>);
+            if (items != null)
+            {
+                var itemToRemove = items.First(x => x.Id == profileId);
+                var found = tmpOutLocationList.FirstOrDefault(x => x == itemToRemove.LocationAccess);
+                if (found != null)
+                {
+                    tmpOutLocationList.Remove(found);
+                }
+                
+            }
+           // listBox_OutProfilesList.Items as 
+            Display();
+        }
+
         private void ts_cb_Checked(object sender, System.Windows.RoutedEventArgs e)
         {
             //var items = ((System.Windows.Controls.ListBox)(this.listView_SelectTsInfo)).Items.SourceCollection;
@@ -240,6 +285,7 @@ namespace UASigner.WpfApp.SubWindows
             //}
             //this.listView_SelectTsInfo.Items.Refresh();
         }
+
         private void SwitchAddOutPanel(AccessType accessType)
         {
             this.wp_OutDirectoryInfo.Visibility = System.Windows.Visibility.Collapsed;
@@ -273,6 +319,19 @@ namespace UASigner.WpfApp.SubWindows
 
             }
             
+        }
+        private void SwitchOutListPane(bool hasItems)
+        {
+            if (hasItems)
+            {
+                this.sp_OutProfilesList.Visibility = System.Windows.Visibility.Visible;
+                this.textBlock_EmptyOutputList.Visibility = System.Windows.Visibility.Collapsed;
+            }
+            else
+            {
+                this.sp_OutProfilesList.Visibility = System.Windows.Visibility.Collapsed;
+                this.textBlock_EmptyOutputList.Visibility = System.Windows.Visibility.Visible;
+            }
         }
 
         private void Display()
@@ -343,14 +402,18 @@ namespace UASigner.WpfApp.SubWindows
                 this.checkBox_AddValidationData.IsChecked = profile.SignProfile.AddValidationData;
             }
             List<UASigner.WpfApp.Display.DisplayableAccessType> displayableList = new List<DisplayableAccessType>();
-            foreach(var la in this.profile.OutLocationAccess)
+            int outIndex = 0;
+            foreach(var la in this.tmpOutLocationList)
             {
-                UASigner.WpfApp.Display.DisplayableAccessType dat = new DisplayableAccessType(la);
+                UASigner.WpfApp.Display.DisplayableAccessType dat = new DisplayableAccessType(la) { Id = outIndex++ };
                 displayableList.Add(dat);
             }
             this.listBox_OutProfilesList.ItemsSource = displayableList;
 
             this.listBox_OutProfilesList.Items.Refresh();
+
+            SwitchOutListPane(this.listBox_OutProfilesList.Items != null && this.listBox_OutProfilesList.Items.Count != 0);
+           
         }
 
 
@@ -360,5 +423,18 @@ namespace UASigner.WpfApp.SubWindows
             comboBoxEdit_InAccess.ItemsSource = ResourceManager.GetLocationTypes();
             comboBoxEdit_InAccess.SelectedIndex = i;
         }
+
+        void ExceptionHandler(Exception ex)
+        {
+            string msg = ex.Message;
+            if (ex is UASigner.Exceptions.IVisualException)
+            {
+                msg = ResourceManager.BuildExceptionMessage(ex as UASigner.Exceptions.IVisualException);
+            }
+
+            MessageBox.Show(msg, "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
     }
 }
+
+ 

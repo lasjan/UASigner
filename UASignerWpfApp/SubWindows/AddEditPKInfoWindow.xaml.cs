@@ -84,7 +84,12 @@ namespace UASigner.WpfApp.SubWindows
 
         void ExceptionHandler(Exception ex)
         {
-            string msg = ResourceManager.BuildExceptionMessage(ex);
+            string msg = ex.Message;
+            if (ex is UASigner.Exceptions.IVisualException)
+            {
+                msg = ResourceManager.BuildExceptionMessage(ex as UASigner.Exceptions.IVisualException);
+            }
+
             MessageBox.Show(msg, "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }

@@ -1,17 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UASigner.WpfApp.Display;
 using System.Globalization;
 using UASigner.Profiles.Exceptions;
+using UASigner.WpfApp.Model;
 namespace UASigner.WpfApp
 {
     public class ResourceManager
     {
         static List<CultureFlag> cultureFlags;
         public static string ResourceNs { get; set; }
+
+        public static class Model
+        {
+            public static ObservableCollection<CadesProfileModel> GetCadesProfiles()
+            {
+                ObservableCollection<CadesProfileModel> list = new ObservableCollection<CadesProfileModel>();
+                list.Add(new CadesProfileModel
+                {
+                    Id = 0,
+                    SignLevel = Profiles.SignatureLevel.CADES_BASELINE_B,
+                    DisplayName = GetStringResource("cblistitem_cadesB", "CAdES B"),
+                    ToolTip = GetStringResource("toolitip_cadesB", "CAdES B desc")
+                });
+                list.Add(new CadesProfileModel
+                {
+                    Id = 1,
+                    SignLevel = Profiles.SignatureLevel.CADES_BASELINE_T,
+                    DisplayName = GetStringResource("cblistitem_cadesT", "CAdES T"),
+                    ToolTip = GetStringResource("toolitip_cadesT", "CAdES T desc")
+                });
+                list.Add(new CadesProfileModel
+                {
+                    Id = 2,
+                    SignLevel = Profiles.SignatureLevel.CADES_101733_C,
+                    DisplayName = GetStringResource("cblistitem_cadesC", "CAdES C"),
+                    ToolTip = GetStringResource("toolitip_cadesC", "CAdES C desc")
+                });
+                list.Add(new CadesProfileModel
+                {
+                    Id = 3,
+                    SignLevel = Profiles.SignatureLevel.CADES_101733_X_LONG,
+                    DisplayName = GetStringResource("cblistitem_cadesXL", "CAdES XL"),
+                    ToolTip = GetStringResource("toolitip_cadesXL", "CAdES XL desc")
+                });
+
+                return list;
+            }
+        }
 
         public static List<DisplayableCadesProfile> GetCadesProfiles()
         {
@@ -81,9 +121,9 @@ namespace UASigner.WpfApp
             var rm  = new System.Resources.ResourceManager(ResourceNs, System.Reflection.Assembly.GetExecutingAssembly());
             return rm.GetString(name) ?? defaultName;
         }
-        public static string BuildExceptionMessage(Exception ex)
+        public static string BuildExceptionMessage(UASigner.Exceptions.IVisualException ex)
         {
-            string msg = ex.Message;
+            string msg = String.Empty;
             System.Resources.ResourceManager rm = new System.Resources.ResourceManager(ResourceNs, System.Reflection.Assembly.GetExecutingAssembly());
             if (ex is ConfigurationException)
             {

@@ -34,9 +34,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FontAwesome.WPF, Version=4.7.0.37774, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
+      <HintPath>..\packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,10 +61,61 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppWindow.cs" />
+    <Compile Include="CommandHandler.cs" />
+    <Compile Include="Controls\FileSelector.xaml.cs">
+      <DependentUpon>FileSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Display\CheckBoxWrapper.cs" />
     <Compile Include="Display\DisplayableAccessType.cs" />
     <Compile Include="Display\DisplayableCadesProfile.cs" />
     <Compile Include="Display\DisplayableTSInfo.cs" />
+    <Compile Include="Exceptions\ValidateException.cs" />
+    <Compile Include="IVisualException.cs" />
+    <Compile Include="Model\Cades\CadesProfileModel.cs" />
+    <Compile Include="Model\CheckBoxWrapper.cs" />
+    <Compile Include="Model\RootFolderModel.cs" />
+    <Compile Include="Model\Service\ServiceMessageModel.cs" />
+    <Compile Include="Model\Timestamp\TimestampServerModel.cs" />
+    <Compile Include="Model\ICheckBoxWrappable.cs" />
+    <Compile Include="Model\IModelItem.cs" />
+    <Compile Include="Model\Profile\FileLocationAccessModel.cs" />
+    <Compile Include="Model\Profile\FtpLocationAccessModel.cs" />
+    <Compile Include="Model\Profile\LocationAccessModel.cs" />
+    <Compile Include="Model\Profile\LocationType.cs" />
+    <Compile Include="Model\Profile\LocationTypeModel.cs" />
+    <Compile Include="Model\NotifyModelBase.cs" />
+    <Compile Include="Model\PkInfo\PkFileInfoModel.cs" />
+    <Compile Include="Model\PkInfo\PkInfoModel.cs" />
+    <Compile Include="Model\PkInfo\PkTypeModel.cs" />
+    <Compile Include="Model\PkInfo\PkUsbStickPkInfoModel.cs" />
+    <Compile Include="Model\Profile\ProfileModel.cs" />
+    <Compile Include="Model\Validation\DirectoryNotExistsValidator.cs" />
+    <Compile Include="Model\Validation\FileNotExistsValidator.cs" />
+    <Compile Include="IPropertyValidator.cs" />
+    <Compile Include="Model\Validation\NotEmptyListValidator.cs" />
+    <Compile Include="Model\Validation\StringNotEmptyValidator.cs" />
+    <Compile Include="Model\Validation\PropertyNotNullValidator.cs" />
+    <Compile Include="Model\Validation\TSServerNotDefinedValidator.cs" />
+    <Compile Include="Profiles\Configuration\CFServiceConfig.cs" />
+    <Compile Include="Profiles\Ftp\FtpAccess.cs" />
+    <Compile Include="Profiles\Providers\IGenericPropertyProvider.cs" />
+    <Compile Include="Profiles\Providers\RootFolderProvider.cs" />
+    <Compile Include="PropertyConditionalValidator.cs" />
+    <Compile Include="Providers\IModelGenericProviderProperty.cs" />
+    <Compile Include="Providers\LocationConverter.cs" />
+    <Compile Include="Providers\ModelProfileProvider.cs" />
+    <Compile Include="Providers\ModelPropertyProvider.cs" />
+    <Compile Include="Providers\ModelRootFolderProvider.cs" />
+    <Compile Include="Providers\RootFoldeModelConverter.cs" />
+    <Compile Include="Providers\ProfileModelConverter.cs" />
+    <Compile Include="Providers\TimestampServerModelConverter.cs" />
+    <Compile Include="Providers\ModelTimestampServerProvider.cs" />
+    <Compile Include="Service\IService.cs" />
+    <Compile Include="Service\Service.cs" />
+    <Compile Include="Service\Configuration\ServiceConfiguration.cs" />
+    <Compile Include="Service\ServiceMessage.cs" />
+    <Compile Include="Service\ServiceState.cs" />
+    <Compile Include="ValidationResult.cs" />
     <Compile Include="Profiles\AccessType.cs" />
     <Compile Include="Profiles\Configuration\CFConfig.cs" />
     <Compile Include="Profiles\Configuration\CFLocationAccess.cs" />
@@ -89,6 +146,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.pl-PL.resx</DependentUpon>
     </Compile>
+    <Compile Include="Providers\IDataToModelConverter.cs" />
+    <Compile Include="Providers\IModelGenericProviderAction.cs" />
+    <Compile Include="Providers\IProviderWrapper.cs" />
+    <Compile Include="Providers\ModelPkInfoProvider.cs" />
+    <Compile Include="Providers\ModelProvider.cs" />
+    <Compile Include="Providers\PkInfoModelConverter.cs" />
     <Compile Include="ResourceManager.cs" />
     <Compile Include="Settings\AddEditPKInfoeEventArgs.cs" />
     <Compile Include="Profiles\SignatureLevel.cs" />
@@ -118,6 +181,35 @@
     <Compile Include="Profiles\TimeStampServerInfo.cs" />
     <Compile Include="Settings\WorkMode.cs" />
     <Compile Include="Utils\Serialization.cs" />
+    <Compile Include="ViewModel\AddPkInfoViewModel.cs" />
+    <Compile Include="ViewModel\AddProfileViewModel.cs" />
+    <Compile Include="ViewModel\AppViewViewModel.cs" />
+    <Compile Include="ViewModel\Controls\FileSelectorViewModel.cs" />
+    <Compile Include="ViewModel\Converters\LocationTypeToIconConverter.cs" />
+    <Compile Include="ViewModel\Converters\SelectedLocationTypeToVisConverter.cs" />
+    <Compile Include="ViewModel\Converters\SelectedPkInfoTypeToVisConverter.cs" />
+    <Compile Include="ViewModel\Converters\PkInfoTypeToIconConverter.cs" />
+    <Compile Include="ViewModel\Converters\TimestampToIconConverter.cs" />
+    <Compile Include="ViewModel\EditRootFolderViewModel.cs" />
+    <Compile Include="ViewModel\Validation\AliasTakenValidator.cs" />
+    <Compile Include="ViewModel\Validation\PasswordInvalidValidator.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="View\AddPkInfoView.xaml.cs">
+      <DependentUpon>AddPkInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AddProfileView.xaml.cs">
+      <DependentUpon>AddProfileView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AppView.xaml.cs">
+      <DependentUpon>AppView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EditRootFolder.xaml.cs">
+      <DependentUpon>EditRootFolder.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Controls\FileSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SubTabs\ProcessTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -143,6 +235,22 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\AddPkInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddProfileView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AppView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EditRootFolder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -166,6 +274,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.pl-PL.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -188,6 +297,23 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\ts_info_ico.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\open_folder_ico.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\file_key_ico.png" />
+    <Resource Include="Resources\Images\usb_key_ico.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\loc_folder_ico.png" />
+    <Resource Include="Resources\Images\loc_ftp_ico.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ts_ico.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\Certificates\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
