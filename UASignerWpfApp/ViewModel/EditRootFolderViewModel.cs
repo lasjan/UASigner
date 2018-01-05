@@ -21,7 +21,8 @@ namespace UASigner.WpfApp.ViewModel
         public ICommand ShowCerts { get { return new CommandHandler(ExecuteShowCerts, () => { return true; }); } }
         public ICommand Save { get { return new CommandHandler(ExecuteSave, () => { return true; }); } }
         public ICommand Cancel { get { return new CommandHandler(ExecuteCancel, () => { return true; }); } }
-        
+        public ICommand CertClick { get { return new CommandHandler(ExecuteCertClick, () => { return true; }); } }
+
         RootFolderModel rootFolder;
         public RootFolderModel RootFolder
         {
@@ -85,8 +86,12 @@ namespace UASigner.WpfApp.ViewModel
         {
             this.ShowCertList = !ShowCertList;
         }
+        void ExecuteCertClick(object parameter)
+        {
+            
+        }
 
-        
+
 
         void ExecuteSave(object parameter)
         {

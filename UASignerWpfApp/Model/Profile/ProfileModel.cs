@@ -164,7 +164,7 @@ namespace UASigner.WpfApp.Model
         }
         protected override List<string> ToValidateProperties()
         {
-            List<string> l = new List<string> { "InLocationAccess", "UsedTimestampServer", "UsedKeysCollection","OutLocationsCollection"};
+            List<string> l = new List<string> { "InLocationAccess", "UsedTimestampServer", "UsedKeysCollection", "OutLocationsCollection", "BackupLocationAccess" };
             l.AddRange(base.ToValidateProperties());
             return l;
         }

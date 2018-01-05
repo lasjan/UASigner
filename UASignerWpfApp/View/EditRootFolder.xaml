@@ -31,7 +31,9 @@
                 </StackPanel>
             </Grid>
             <StackPanel Visibility="{Binding Path=ShowCertList, Converter={StaticResource BoolToVis}}" Style="{StaticResource VisibleAnimation}">
-                <controls:CertViewer CertificateCollection="{Binding FetchedCerts,UpdateSourceTrigger=PropertyChanged}" Test="{Binding RootFolder.RootPath, UpdateSourceTrigger=PropertyChanged}">
+                <controls:CertViewer CertificateCollection="{Binding FetchedCerts,UpdateSourceTrigger=PropertyChanged}"
+                                     
+                                     >
                     
                 </controls:CertViewer>
             </StackPanel>

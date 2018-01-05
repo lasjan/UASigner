@@ -13,6 +13,14 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
+                            <StackPanel.InputBindings>
+                                <MouseBinding MouseAction="LeftDoubleClick"
+                                              Command="{Binding DataContext.CertClick, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                                              CommandParameter="{Binding}"
+                                              >
+                                    
+                                </MouseBinding>
+                            </StackPanel.InputBindings>
                             <Image Height="16" HorizontalAlignment="Left">
                                 <Image.Source>
                                     <BitmapImage UriSource="/Resources/Images/cert_ico.png"/>

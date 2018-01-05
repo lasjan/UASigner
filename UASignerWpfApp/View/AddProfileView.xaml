@@ -100,6 +100,28 @@
                                     <TextBox Grid.Column="1"  Grid.Row="1" VerticalAlignment="Center" Text="{Binding Profile.InLocationAccess.Port,TargetNullValue=''}" Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" Margin="0 5 0 15"></TextBox>
                                 </Grid>
                             </StackPanel>
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                                <WrapPanel HorizontalAlignment="Right">
+                                    <TextBlock Text="Use Backup" Padding="0 0 0 1" Margin="0 0 2 0"></TextBlock>
+                                    <CheckBox IsChecked="{Binding UseBackup, Mode=TwoWay}"></CheckBox>
+                                </WrapPanel>
+                                <StackPanel Visibility="{Binding Path=UseBackup, Converter={StaticResource BoolToVis}}" Style="{StaticResource VisibleAnimation}">
+                                    <Grid Margin="0 0 0 0" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="70"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Backup" Style="{StaticResource LabelText}"></TextBlock>
+                                        <StackPanel Grid.Column="1" Orientation="Vertical"  Margin="0 5 0 5">
+                                            <TextBox VerticalAlignment="Center" Text="{Binding Profile.BackupLocationAccess.Path, ValidatesOnNotifyDataErrors=True}" 
+                                                 Validation.ErrorTemplate="{StaticResource validationErrorTemplate}"></TextBox>
+                                            <WrapPanel HorizontalAlignment="Right" >
+                                                <Button HorizontalAlignment="Right" Style="{StaticResource ShowFolderButton}" Command="{Binding FolderOpen}" CommandParameter="BackupLocationAccess"></Button>
+                                            </WrapPanel>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </StackPanel>
                         </StackPanel>
                     </Grid>
                 </Border>

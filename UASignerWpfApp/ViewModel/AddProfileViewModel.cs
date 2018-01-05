@@ -179,6 +179,23 @@ namespace UASigner.WpfApp.ViewModel
                 OnPropertyChanged("Profile");
             }
         }
+        bool useBackup;
+        public bool UseBackup
+        {
+            get
+            {
+                return useBackup;
+            }
+            set
+            {
+                useBackup = value;
+                if (!value)
+                {
+                    Profile.BackupLocationAccess = null;
+                }
+                OnPropertyChanged();
+            }
+        }
 
         ProfileModel profile;
         public ProfileModel Profile
@@ -206,7 +223,7 @@ namespace UASigner.WpfApp.ViewModel
             this.timestampServerProvider = timestampServerProvider;
 
             Profile = new ProfileModel();
-            
+            Profile.BackupLocationAccess = null;
             this.PkInfoKeysSelection = new ObservableCollection<CheckBoxWrapper>();
             Profile.UsedKeysCollection = new ObservableCollection<PkInfoModel>();
             foreach (var pkInfo in modelPkInfoProvider.Get())
@@ -246,11 +263,13 @@ namespace UASigner.WpfApp.ViewModel
 
             SelectedCadesProfile = CadesProfilesCollection.First();
 
+            UseBackup = false;
             
             if (toEdit != null)
             {
                 Profile.Id = toEdit.Id;
                 Profile.InLocationAccess = toEdit.InLocationAccess;
+                Profile.BackupLocationAccess = toEdit.BackupLocationAccess;
                 Profile.OutLocationsCollection = toEdit.OutLocationsCollection;
                 Profile.UsedKeysCollection = toEdit.UsedKeysCollection;
                 Profile.UsedTimestampServer = toEdit.UsedTimestampServer;
@@ -293,6 +312,8 @@ namespace UASigner.WpfApp.ViewModel
                         }
                     }
                 }
+
+                UseBackup = (Profile.BackupLocationAccess as FileLocationAccessModel) != null;
             }
 
             if (Profile.OutLocationsCollection == null)
@@ -428,6 +449,16 @@ namespace UASigner.WpfApp.ViewModel
                         if (this.Profile.InLocationAccess is FileLocationAccessModel)
                         {
                             ((FileLocationAccessModel)this.Profile.InLocationAccess).Path = browseFolderDialog.SelectedPath;
+                        }
+                        break;
+                    case "BackupLocationAccess":
+                        if (this.Profile.BackupLocationAccess == null)
+                        {
+                            this.Profile.BackupLocationAccess = new FileLocationAccessModel();
+                        }
+                        if (this.Profile.BackupLocationAccess is FileLocationAccessModel)
+                        {
+                            ((FileLocationAccessModel)this.Profile.BackupLocationAccess).Path = browseFolderDialog.SelectedPath;
                         }
                         break;
                 }

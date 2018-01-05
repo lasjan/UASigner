@@ -21,15 +21,22 @@ namespace UASigner.WpfApp.Controls
     /// </summary>
     public partial class CertViewer : UserControl
     {
+
         public static readonly DependencyProperty CertificateCollectionProperty = DependencyProperty.Register("CertificateCollection",
             typeof(ObservableCollection<CertificateModel>),
             typeof(CertViewer),
             new PropertyMetadata(null));
 
-        public static readonly DependencyProperty TestProperty = DependencyProperty.Register("Test",
-            typeof(string),
-            typeof(CertViewer),
-            new PropertyMetadata("elo"));
+        public static readonly RoutedEvent CertDoubleClickEvent = EventManager.RegisterRoutedEvent("CertDoubleClick",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(CertViewer));
+
+        public event RoutedEventHandler CertDoubleClick
+        {
+            add { AddHandler(CertDoubleClickEvent, value); }
+            remove { RemoveHandler(CertDoubleClickEvent, value); }
+        }
 
 
         public ObservableCollection<CertificateModel> CertificateCollection
@@ -37,14 +44,11 @@ namespace UASigner.WpfApp.Controls
             get { return (ObservableCollection<CertificateModel>)GetValue(CertificateCollectionProperty); }
             set { SetValue(CertificateCollectionProperty, value); }
         }
-        public string Test
-        {
-            get { return (string)GetValue(TestProperty); }
-            set { SetValue(TestProperty, value); }
-        }
+
         public CertViewer()
         {
             InitializeComponent();
         }
+       
     }
 }
