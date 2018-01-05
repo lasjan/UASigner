@@ -42,7 +42,7 @@ namespace UASigner.Profiles.Exceptions
     /*
      Codes Lookup 
      * 1 - fodler nie istnieje
-
+     * 2 - backup tylko na lokalny storze
      * 101 - pk info z aliasem juz istnieje
      * 102 - haslo sie nie zgadza
      

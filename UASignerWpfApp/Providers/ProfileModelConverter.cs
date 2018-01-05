@@ -27,6 +27,12 @@ namespace UASigner.WpfApp.Providers
 
             };
 
+            var backupLocation = data.BackupLocationAccess;
+            LocationAccessModel backupLocationModel = null;
+
+            backupLocationModel = lc.ConvertToModel(backupLocation);
+            profileModel.BackupLocationAccess = backupLocationModel;
+
             if(data.OutLocationAccess != null)
             {
                 profileModel.OutLocationsCollection = new System.Collections.ObjectModel.ObservableCollection<LocationAccessModel>();
@@ -72,6 +78,11 @@ namespace UASigner.WpfApp.Providers
 
             profile.OutLocationAccess = new List<LocationAccess>();
 
+            if (model.BackupLocationAccess != null)
+            {
+                profile.BackupLocationAccess = lc.ConvertFromModel(model.BackupLocationAccess);
+
+            }
             foreach (var outAccess in model.OutLocationsCollection)
             {
                 ((List<LocationAccess>)profile.OutLocationAccess).Add(lc.ConvertFromModel(outAccess));

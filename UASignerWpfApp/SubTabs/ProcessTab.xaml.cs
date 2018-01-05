@@ -107,7 +107,7 @@ namespace UASigner.WpfApp.SubTabs
                                     cm.AppendLine("["+DateTime.Now.ToString()+"]Signing: " + document.DocumentName + " with " + key.Alias);
                                 }
 
-                                inLoc.RemoveDocument(document,true);
+                                inLoc.RemoveDocument(document, profile.BackupLocationAccess);
                             }
 
                         }

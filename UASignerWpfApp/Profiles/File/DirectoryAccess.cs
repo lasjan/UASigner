@@ -9,7 +9,6 @@ namespace UASigner.Profiles
 {
     public class DirectoryAccess:LocationAccess
     {
-        LocationAccess backup;
         DirectoryInfo directoryInfo;
         string fileMask ="xml";
 
@@ -26,12 +25,7 @@ namespace UASigner.Profiles
             this.directoryInfo = new DirectoryInfo(directoryPath);
             this.fileMask = fileMask;
         }
-        public DirectoryAccess(string directoryPath, string fileMask,string backupPath)
-        {
-            this.directoryInfo = new DirectoryInfo(directoryPath);
-            this.fileMask = fileMask;
-            this.backup = new DirectoryAccess(backupPath, fileMask);
-        }
+
         public override IEnumerable<IDocument> GetDocuments()
         {
             foreach (var fileInfo in this.directoryInfo.GetFiles())
@@ -70,32 +64,28 @@ namespace UASigner.Profiles
             return String.Format("[{0}{1}]", this.DirectoryPath, this.fileMask);
         }
 
-        public override void RemoveDocument(IDocument document, bool withBackup)
+        public override void RemoveDocument(IDocument document, LocationAccess backupAccess)
         {
-            if (withBackup)
+            if (backupAccess != null)
             {
-                if (this.backup == null)
+                DirectoryAccess backupDirectoryAccress = backupAccess as DirectoryAccess;
+                if (backupDirectoryAccress == null)
                 {
-                    try
+                    throw new ConfigurationException(2, "Only local storage can be used as backup", null);
+                }
+                try
+                {
+                    if (!Directory.Exists(backupDirectoryAccress.DirectoryPath))
                     {
-                        if (!Directory.Exists(this.directoryInfo.FullName + "\\backup"))
-                        {
-                            Directory.CreateDirectory(this.directoryInfo.FullName + "\\backup");
-                        }
-                        this.backup = new DirectoryAccess(this.directoryInfo.FullName + "\\backup", this.fileMask);
+                        Directory.CreateDirectory(backupDirectoryAccress.DirectoryPath);
                     }
-                    catch { }
+
                 }
-                if(this.backup == null)
-                {
-                    throw new Exceptions.ConfigurationException(1, "Backup folder has to be spefied when 'withBackup=true' invke", null);
-                }
+                catch { }
 
                 List<IDocument> toMoveList = new List<IDocument> { document };
-                this.backup.PutDocuments(toMoveList);
+                backupDirectoryAccress.PutDocuments(toMoveList);
             }
-
-
             var toRemove = this.directoryInfo.GetFiles().FirstOrDefault(x => x.Name.Equals(document.DocumentName, StringComparison.InvariantCultureIgnoreCase));
             if (toRemove != null)
             {

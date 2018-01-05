@@ -62,6 +62,9 @@
     </ApplicationDefinition>
     <Compile Include="AppWindow.cs" />
     <Compile Include="CommandHandler.cs" />
+    <Compile Include="Controls\CertViewer.xaml.cs">
+      <DependentUpon>CertViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\FileSelector.xaml.cs">
       <DependentUpon>FileSelector.xaml</DependentUpon>
     </Compile>
@@ -72,6 +75,7 @@
     <Compile Include="Exceptions\ValidateException.cs" />
     <Compile Include="IVisualException.cs" />
     <Compile Include="Model\Cades\CadesProfileModel.cs" />
+    <Compile Include="Model\Certificates\CertificateModel.cs" />
     <Compile Include="Model\CheckBoxWrapper.cs" />
     <Compile Include="Model\RootFolderModel.cs" />
     <Compile Include="Model\Service\ServiceMessageModel.cs" />
@@ -96,7 +100,9 @@
     <Compile Include="Model\Validation\StringNotEmptyValidator.cs" />
     <Compile Include="Model\Validation\PropertyNotNullValidator.cs" />
     <Compile Include="Model\Validation\TSServerNotDefinedValidator.cs" />
+    <Compile Include="Profiles\Configuration\CFEnvelope.cs" />
     <Compile Include="Profiles\Configuration\CFServiceConfig.cs" />
+    <Compile Include="Profiles\EnvelopeType.cs" />
     <Compile Include="Profiles\Ftp\FtpAccess.cs" />
     <Compile Include="Profiles\Providers\IGenericPropertyProvider.cs" />
     <Compile Include="Profiles\Providers\RootFolderProvider.cs" />
@@ -117,6 +123,7 @@
     <Compile Include="Service\Configuration\ServiceConfiguration.cs" />
     <Compile Include="Service\ServiceMessage.cs" />
     <Compile Include="Service\ServiceState.cs" />
+    <Compile Include="Utils\Helper.cs" />
     <Compile Include="ValidationResult.cs" />
     <Compile Include="Profiles\AccessType.cs" />
     <Compile Include="Profiles\Configuration\CFConfig.cs" />
@@ -191,6 +198,7 @@
     <Compile Include="ViewModel\Converters\SelectedLocationTypeToVisConverter.cs" />
     <Compile Include="ViewModel\Converters\SelectedPkInfoTypeToVisConverter.cs" />
     <Compile Include="ViewModel\Converters\PkInfoTypeToIconConverter.cs" />
+    <Compile Include="ViewModel\Converters\ServiceStateToBoolConverter.cs" />
     <Compile Include="ViewModel\Converters\TimestampToIconConverter.cs" />
     <Compile Include="ViewModel\EditRootFolderViewModel.cs" />
     <Compile Include="ViewModel\Validation\AliasTakenValidator.cs" />
@@ -208,6 +216,10 @@
     <Compile Include="View\EditRootFolder.xaml.cs">
       <DependentUpon>EditRootFolder.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\CertViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\FileSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -315,7 +327,7 @@
     <Resource Include="Resources\Images\ts_ico.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\Certificates\" />
+    <Resource Include="Resources\Images\cert_ico.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

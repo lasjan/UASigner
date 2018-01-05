@@ -10,9 +10,10 @@ namespace UASigner.Profiles
     {
         int? Id { get; set; }
         LocationAccess InLocationAccess { get; set; }
+        LocationAccess BackupLocationAccess { get; set; }
         IEnumerable<LocationAccess> OutLocationAccess { get; set; }
         SignContextProfile SignProfile { get; set; }
-
+        EnvelopeType EnvelopeType {get;set;}
         void Validate();
     }
 }

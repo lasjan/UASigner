@@ -10,11 +10,11 @@ none
 false
 TRACE
 C:\Users\Comarch\Documents\Visual Studio 2013\Projects\UASignerWpfApp\UASignerWpfApp\App.xaml
-82107171917
+101757296681
 
-12077388865
+142477234819
 16693294013
-Controls\FileSelector.xaml;SubTabs\ProcessTab.xaml;SubWindows\AddEditPKInfoWindow.xaml;SubWindows\AddEditProfileWindow.xaml;MainWindow.xaml;View\AddPkInfoView.xaml;View\AddProfileView.xaml;View\AppView.xaml;
+Controls\CertViewer.xaml;Controls\FileSelector.xaml;SubTabs\ProcessTab.xaml;SubWindows\AddEditPKInfoWindow.xaml;SubWindows\AddEditProfileWindow.xaml;MainWindow.xaml;View\AddPkInfoView.xaml;View\AddProfileView.xaml;View\AppView.xaml;View\EditRootFolder.xaml;
 
 True
 

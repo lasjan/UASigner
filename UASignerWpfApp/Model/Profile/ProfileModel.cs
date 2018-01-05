@@ -8,8 +8,7 @@ using System.ComponentModel;
 using UASigner.WpfApp.Model.Validation;
 using UASigner.WpfApp.Validation;
 using UASigner.Profiles;
-using UASigner.WpfApp.Validation;
-using UASigner.WpfApp.Model.Validation;
+
 namespace UASigner.WpfApp.Model
 {
     public class ProfileModel : NotifyModelBase, IModelItem
@@ -39,6 +38,16 @@ namespace UASigner.WpfApp.Model
             }
         }
 
+        LocationAccessModel backupLocationAccess { get; set; }
+        public LocationAccessModel BackupLocationAccess
+        {
+            get { return backupLocationAccess; }
+            set
+            {
+                this.backupLocationAccess = value;
+                OnPropertyChanged();
+            }
+        }
         ObservableCollection<LocationAccessModel> outLocationsCollection { get; set; }
         public ObservableCollection<LocationAccessModel> OutLocationsCollection
         {

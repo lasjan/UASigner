@@ -60,7 +60,7 @@ namespace UASigner.Profiles
             throw new NotImplementedException();
         }
 
-        public override void RemoveDocument(IDocument document, bool withBackup)
+        public override void RemoveDocument(IDocument document, LocationAccess backupAccess)
         {
             throw new NotImplementedException();
         }

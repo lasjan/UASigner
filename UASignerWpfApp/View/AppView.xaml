@@ -9,6 +9,7 @@
         <viewmodel:LocationTypeToIconConverter x:Key="inLocationToIconConverter"></viewmodel:LocationTypeToIconConverter>
         <viewmodel:PkInfoTypeToIconConverter x:Key="pkInfoToIconConverter"></viewmodel:PkInfoTypeToIconConverter>
         <viewmodel:TimestampToIconConverter x:Key="tsToIconConverter"></viewmodel:TimestampToIconConverter>
+        <viewmodel:ServiceStateToBoolConverter x:Key="stateToBoolConverter"></viewmodel:ServiceStateToBoolConverter>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </Window.Resources>
     <Grid>
@@ -210,10 +211,10 @@
                     <TextBlock Text="{Binding ServiceMessage.Message}" Grid.Column="1" Grid.Row="1"></TextBlock>
                     <StackPanel Grid.ColumnSpan="2" Grid.Row="2" Orientation="Horizontal">
                         <WrapPanel>
-                            <Button Content="Start" Margin="5" Padding="3" Command="{Binding ServiceStart}"></Button>
+                            <Button Content="Start" Margin="5" Padding="3" Command="{Binding ServiceStart}" IsEnabled="{Binding Path=ServiceMessage, Converter={StaticResource stateToBoolConverter},ConverterParameter='Start'}"></Button>
                         </WrapPanel>
                         <WrapPanel>
-                            <Button Content="Stop"  Margin="5" Padding="3" Command="{Binding ServiceStop}"></Button>
+                            <Button Content="Stop"  Margin="5" Padding="3" Command="{Binding ServiceStop}" IsEnabled="{Binding Path=ServiceMessage, Converter={StaticResource stateToBoolConverter},ConverterParameter='Stop'}"></Button>
                         </WrapPanel>  
                     </StackPanel>
                 </Grid>

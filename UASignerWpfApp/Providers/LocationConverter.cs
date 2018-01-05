@@ -42,6 +42,7 @@ namespace UASigner.WpfApp.Providers
             { 
                 var fileModel = (FileLocationAccessModel)model;
                 locationAccess = new DirectoryAccess(fileModel.Path, fileModel.FileMask);
+               
 
             }
             if (model is FtpLocationAccessModel)

@@ -14,7 +14,7 @@ namespace UASigner.Service
         Task t;
         CancellationTokenSource tokenSource;
         CancellationToken cancelationToken;
-
+        bool working = false;
         public DummyService(UASigner.Profiles.Configuration.Configuration config, IServiceController serviceController)
             : base(config, serviceController)
         { }
@@ -61,6 +61,7 @@ namespace UASigner.Service
             cancelationToken = tokenSource.Token;
 
             DoWork();
+            working = true;
 
            
         }
@@ -73,19 +74,23 @@ namespace UASigner.Service
             }
 
             tokenSource.Cancel();
-
+            working = false;
 
         }
         public override void Init()
         {
             this.config.ConfigurationChanged += config_ConfigurationChanged;
+            tokenSource = new CancellationTokenSource();
         }
 
         void config_ConfigurationChanged(object sender, EventArgs e)
         {
-            Stop();
-            ServiceMessage message = new ServiceMessage { State = ServiceState.Stopping, Message = "Reloading.." };
-            Start();
+            if (working)
+            {
+                Stop();
+                ServiceMessage message = new ServiceMessage { State = ServiceState.Stopping, Message = "Reloading.." };
+                Start();
+            }
         }
 
     }

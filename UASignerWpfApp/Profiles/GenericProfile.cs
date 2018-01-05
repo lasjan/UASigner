@@ -31,7 +31,16 @@ namespace UASigner.Profiles
             set;
         }
 
-
+        public EnvelopeType EnvelopeType
+        {
+            get;
+            set;
+        }
+        public LocationAccess BackupLocationAccess
+        {
+            get;
+            set;
+        }
         public void Validate()
         {
             if (this.InLocationAccess != null)
@@ -46,6 +55,6 @@ namespace UASigner.Profiles
                 }
             }
 
-        }
+        }     
     }
 }

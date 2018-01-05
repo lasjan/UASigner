@@ -38,8 +38,16 @@ namespace UASigner.Profiles
             get;
             set;
         }
-
-
+        public LocationAccess BackupLocationAccess
+        {
+            get;
+            set;
+        }
+        public EnvelopeType EnvelopeType
+        {
+            get;
+            set;
+        }
         public void Validate()
         {
             throw new NotImplementedException();

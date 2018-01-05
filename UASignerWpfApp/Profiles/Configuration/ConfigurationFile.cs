@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.IO;
 using UASigner.Profiles.Utils;
-using System.Text;
+
 
 namespace UASigner.Profiles.Configuration
 {
@@ -94,6 +94,17 @@ namespace UASigner.Profiles.Configuration
                     FtpAccess inFtpAccess = new FtpAccess(address, Int32.Parse(port), user, password);
                     profile.InLocationAccess = inFtpAccess;
                 }
+
+                var backupAccess = cfProile.BackupLocationAccess;
+
+                if (backupAccess!=null && backupAccess.Type.Equals("directory", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var dirPath = backupAccess.Parameters["dirPath"];
+                    var fileMask = backupAccess.Parameters["fileMask"];
+                    DirectoryAccess backupDirAccess = new DirectoryAccess(dirPath, fileMask);
+                    profile.BackupLocationAccess = backupDirAccess;
+                }
+
                 List<LocationAccess> outAccess = new List<LocationAccess>();
 
                 var outputAccessList = cfProile.OutputLocationsAccess;
@@ -153,8 +164,15 @@ namespace UASigner.Profiles.Configuration
                 Enum.TryParse<SignatureLevel>(cfProile.SignContext.SignatureProfile, out signatureLevel);
                 signProfile.Level = signatureLevel;
 
-                profile.SignProfile = signProfile; 
-                
+                profile.SignProfile = signProfile;
+
+                if (cfProile.Envelope != null)
+                { 
+                    EnvelopeType envelopeType = EnvelopeType.NONE;
+                    Enum.TryParse<EnvelopeType>(cfProile.Envelope.Type, out envelopeType);
+                    profile.EnvelopeType = envelopeType;
+                }
+
                 profiles.Add(profile);
             }
 
@@ -222,6 +240,17 @@ namespace UASigner.Profiles.Configuration
                     CFLocationAccess inLocation = new CFLocationAccess { Type = "Ftp", Parameters = parameters };
                     cfProfile.InputLocationAccess = inLocation;
                 }
+
+                if (profile.BackupLocationAccess !=null && profile.BackupLocationAccess is DirectoryAccess)
+                {
+                    var d = (profile.BackupLocationAccess as DirectoryAccess);
+                    SerializableDictionary<string, string> parameters = new SerializableDictionary<string, string> { };
+                    parameters.Add("dirPath", d.DirectoryPath);
+                    parameters.Add("fileMask", d.FileMask);
+                    CFLocationAccess backupLocation = new CFLocationAccess { Type = "Directory", Parameters = parameters };
+                    cfProfile.BackupLocationAccess = backupLocation;
+                }
+
                 cfProfile.OutputLocationsAccess = new List<CFLocationAccess>();
                 foreach (var outAccess in profile.OutLocationAccess)
                 {
@@ -264,6 +293,8 @@ namespace UASigner.Profiles.Configuration
                 cfProfile.SignContext.AddContentTimeStamp = profile.SignProfile.AddContentTimeStamp.ToString();
                 cfProfile.SignContext.AddCertificate = profile.SignProfile.AddCertificate.ToString();
 
+                CFEnvelope envelope = new CFEnvelope { Type = profile.EnvelopeType.ToString() };
+                cfProfile.Envelope = envelope;
                 cfConfig.Profiles.Add(cfProfile);
             }
             foreach (var tsInfo in this.tsInfos)
